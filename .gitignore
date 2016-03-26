@@ -1,0 +1,6 @@
+*.class
+.metadata/
+RemoteSystemsTempFiles/
+bin/
+.recommenders/
+./target

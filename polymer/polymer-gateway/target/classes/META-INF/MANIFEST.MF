@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: polymer-gateway
+Implementation-Version: 1.0.0-SNAPSHOT
+Built-By: zhenting.jiang
+Specification-Title: polymer-gateway
+Implementation-Vendor-Id: com.payadd
+Build-Jdk: 1.8.0_60
+Specification-Version: 1.0.0-SNAPSHOT
+Created-By: Maven Integration for Eclipse
+
