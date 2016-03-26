@@ -3,4 +3,8 @@
 RemoteSystemsTempFiles/
 bin/
 .recommenders/
-./target
+target/
+.project
+.settings/
+.classpath
+.recommenders/
