@@ -1,6 +1,7 @@
 *.class
 .metadata/
 RemoteSystemsTempFiles/
+RemoteSystemsTempFiles
 bin/
 .recommenders/
 target/
