@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="">
+	<resultMap type="com.payadd.polymer.model.bdm.Merchant" id="MerchantResultMap">
+		<id property="merchantCode" column="merchant_code" />
+		<result property="fullName" column="full_name" />
+		<result property="shortName" column="short_name" />
+		<result property="status" column="status" />
+		<result property="listFlag" column="list_flag" />
+		<result property="level" column="level" />
+		<result property="siteName" column="site_name" />
+		<result property="siteAddress" column="site_address" />
+		<result property="businessLicense" column="business_license" />
+		<result property="orgCode" column="org_code" />
+		<result property="idDurationStart" column="id_duration_start" />
+		<result property="idDurationEnd" column="id_duration_end" />
+		<result property="representName" column="represent_name" />
+		<result property="representIdCode" column="represent_id_code" />
+		<result property="businessScope" column="business_scope" />
+		<result property="registeredCapital" column="registered_capital" />
+		<result property="registeredAddress" column="registered_address" />
+		<result property="industryClass" column="industry_class" />
+		<result property="companyEmail" column="company_email" />
+		<result property="companyAddress" column="company_address" />
+		<result property="companyPhone" column="company_phone" />
+		<result property="companyTax" column="company_tax" />
+		<result property="contactName" column="contact_name" />
+		<result property="contactPosition" column="contact_position" />
+		<result property="contactSex" column="contact_sex" />
+		<result property="contactEmail" column="contact_email" />
+		<result property="contactPhone" column="phone" />
+		<result property="contactTel" column="tel" />
+		<result property="contactQQ" column="qq" />
+		<result property="createUserId" column="create_user_id" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="createTime" column="create_time" />
+		<result property="lastUpdateTime" column="last_update_time" />
+
+		<!-- <result property="transferChannelCode" column="transfer_channel_code"/> -->
+	</resultMap>
+</mapper>  

@@ -1,0 +1,45 @@
+<?xml version="1.0"  encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE ibatis-mappings [      
+<!ELEMENT ibatis-mappings (class)*>
+<!ELEMENT class (#PCDATA)*>
+<!ATTLIST class name CDATA #REQUIRED>
+<!ATTLIST class table CDATA #REQUIRED>
+<!ATTLIST class map-id CDATA #REQUIRED>
+<!ATTLIST class entity-name CDATA #IMPLIED>
+]>
+<ibatis-mappings>
+	<!-- MYSQL系统表 -->
+	<class name="com.payadd.polymer.model.bdm.Merchant" table="bdm_merchant"
+		map-id="MerchantResultMap">
+	</class>
+	<class name="com.payadd.polymer.model.bdm.MerchantBankAccount"
+		table="bdm_merchant_bank_account" map-id="MerchantBankAccountResultMap">
+	</class>
+	<class name="com.payadd.polymer.model.bdm.MerchantSecurity"
+		table="bdm_merchant_security" map-id="MerchantSecurityResultMap">
+	</class>
+	<class name="com.payadd.polymer.model.bdm.MerchantSettleCycle"
+		table="bdm_merchant_settle_cycle" map-id="MerchantSettleCycleResultMap">
+	</class>
+	<class name="com.payadd.polymer.model.bdm.MerchantUser" table="bdm_merchant_user"
+		map-id="MerchantUserResultMap">
+	</class>
+	<class name="com.payadd.polymer.model.aut.Trade" table="aut_trade"
+		map-id="TradeResultMap">
+	</class>
+		<class name="com.payadd.polymer.model.aut.MerchantMessage" table="aut_merchant_message"
+		map-id="MerchantMessageResultMap">
+	</class>
+		<class name="com.payadd.polymer.model.aut.ChannelMessage" table="aut_channel_message"
+		map-id="ChannelMessageResultMap">
+	</class>
+		<class name="com.payadd.polymer.model.acc.Account" table="acc_account"
+		map-id="AccountResultMap">
+	</class>
+		<class name="com.payadd.polymer.model.acc.AccountDetail" table="acc_account_detail"
+		map-id="AccountDetailResultMap">
+	</class>
+	<class name="com.payadd.polymer.model.acc.Recharge" table="acc_recharge"
+		map-id="RechargeResultMap">
+	</class>
+</ibatis-mappings>

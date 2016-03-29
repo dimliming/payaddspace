@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="">
+	<resultMap type="com.payadd.polymer.model.acc.Recharge"
+		id="RechargeResultMap">
+		<id property="rechargeNo" column="recharge_no" />
+		<result property="merchantCode" column="merchant_code" />
+		<result property="rechargeTime" column="recharge_time" />
+		<result property="channelCode" column="channel_code" />
+		<result property="amt" column="amt" />
+	</resultMap>
+</mapper>  
