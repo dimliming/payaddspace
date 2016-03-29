@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<mappers>
+		<mapper resource="mybatis/MerchantMapper.xml" />
+		<mapper resource="mybatis/MerchantBankAccountMapper.xml" />
+		<mapper resource="mybatis/MerchantSecurityMapper.xml" />
+		<mapper resource="mybatis/MerchantSettleCycleMapper.xml" />
+		<mapper resource="mybatis/MerchantUserMapper.xml" />
+		<mapper resource="mybatis/TradeMapper.xml" />
+		<mapper resource="mybatis/MerchantMessageMapper.xml" />
+		<mapper resource="mybatis/ChannelMessageMapper.xml" />
+		<mapper resource="mybatis/AccountMapper.xml" />
+		<mapper resource="mybatis/AccountDetailMapper.xml" />
+		<mapper resource="mybatis/RechargeMapper.xml" />
+	</mappers>
+</configuration>

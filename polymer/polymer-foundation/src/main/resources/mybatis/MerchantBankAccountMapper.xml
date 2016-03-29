@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="">
+	<resultMap type="com.payadd.polymer.model.bdm.MerchantBankAccount" id="MerchantBankAccountResultMap">
+		<id property="merchantCode" column="merchant_code" />
+		<result property="accountNo" column="account_no" />
+		<result property="accountName" column="account_name" />
+		<result property="bankCode" column="bank_code" />
+		<result property="bankName" column="bank_name" />
+		<result property="bankAddress" column="bank_address" />
+		<result property="settleCode" column="settle_code" />
+		<result property="pcFlag" column="pc_flag" />
+		<result property="isDefault" column="is_default" />
+		<result property="usage" column="usage" />
+		<result property="createUserId" column="create_user_id" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="createTime" column="create_time" />
+		<result property="lastUpdateTime" column="last_update_time" />
+
+		<!-- <result property="transferChannelCode" column="transfer_channel_code"/> -->
+	</resultMap>
+</mapper>  

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="">
+	<resultMap type="com.payadd.polymer.model.acc.AccountDetail"
+		id="AccountDetailResultMap">
+		<id property="id" column="id" />
+		<result property="accountNo" column="account_no" />
+		<result property="merchantCode" column="merchant_code" />
+		<result property="tradeTime" column="trade_time" />
+		<result property="accountTime" column="account_time" />
+		<result property="tradeType" column="trade_type" />
+		<result property="tradeNo" column="trade_no" />
+		<result property="amt" column="amt" />
+		<result property="balance" column="balance" />
+	</resultMap>
+</mapper>  

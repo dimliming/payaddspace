@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="">
+	<resultMap type="com.payadd.polymer.model.bdm.MerchantUser"
+		id="MerchantUserResultMap">
+		<id property="id" column="id" />
+		<result property="merchantCode" column="merchant_code" />
+		<result property="userName" column="user_name" />
+		<result property="phone" column="phone" />
+		<result property="email" column="email" />
+		<result property="loginName" column="login_name" />
+		<result property="password" column="password" />
+		<result property="payPassword" column="pay_password" />
+		<result property="welcome" column="welcome" />
+		<result property="secureQuestion" column="secure_question" />
+		<result property="secureAnswer" column="secure_answer" />
+		<result property="authAgency" column="auth_agency" />
+		<result property="authCheck" column="auth_check" />
+		<result property="createTime" column="create_time" />
+		<result property="lastUpdateTime" column="last_update_time" />
+
+	</resultMap>
+</mapper>
