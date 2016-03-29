@@ -9,7 +9,7 @@ public class Extension<T> {
 	private Class<T> type;
 	private T instance;
 	private String code;
-	private String label;
+	private String name;
 	private ConcurrentMap<String, ExtensionPurpose> extensionPurposes = new ConcurrentHashMap<String, ExtensionPurpose>();
 	
 	public Extension(Class<T> type) {
@@ -37,12 +37,13 @@ public class Extension<T> {
 		return extPurpose;
 	}
 
-	public String getLabel() {
-		return label;
+
+	public String getName() {
+		return name;
 	}
 
-	public void setLabel(String label) {
-		this.label = label;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public T getInstance() {

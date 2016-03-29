@@ -1,7 +1,9 @@
 package com.payadd.framework.common.extension;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,8 @@ public class ExtensionManager<T> {
 	//private ConcurrentMap<String, Object> cachedExtInstances = new ConcurrentHashMap<String, Object>();
 	//private ConcurrentMap<Class<T>, T> instanceTypeMap = new ConcurrentHashMap<Class<T>, T>();
 	private ConcurrentMap<String,Extension<T>> extensionMap = new ConcurrentHashMap<String, Extension<T>>();
+	private Map<String,T> extensionInstanceMap = new HashMap<String, T>();
+	
 	//private ConcurrentMap<String,T> extensionInstanceMap = new ConcurrentHashMap<String, T>();
 	
 	private Map<String, Class<?>> extensionRouterTypes = null;
@@ -66,6 +70,7 @@ public class ExtensionManager<T> {
 			T instance = createInstance(ext.getType(),false);
 			ext.setInstance(instance);
 			//extensionInstanceMap.put(code, instance);
+			extensionInstanceMap.put(code, instance);
 		}
 	}
 	private void resolveExtType(Class<T> extClass){
@@ -79,7 +84,7 @@ public class ExtensionManager<T> {
 
 		//resolve extension purpose
 		Extension<T> extension = new Extension<T>(extClass);
-		extension.setLabel(desc.label());
+		extension.setName(desc.name());
 		this.extensionMap.put(code, extension);
 		
 	}
@@ -189,13 +194,73 @@ public class ExtensionManager<T> {
 	}
 	
 	private T createInstance(Class<T> type,boolean isAdaptor){
-		//TODO:simple IOC
+		//simple IOC
+		T instance = null;
+		try {
+			if (isAdaptor){
+				Constructor<T> constructor = type.getConstructor(new Class<?>[]{Map.class});
+				instance = constructor.newInstance(new Object[]{extensionInstanceMap});
+			}else{
+				instance = type.newInstance();
+			}
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			throw new SystemException(e);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+			throw new SystemException(e);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			throw new SystemException(e);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			throw new SystemException(e);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			throw new SystemException(e);
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+			throw new SystemException(e);
+		}
 		
 		if (EXTENSION_POINT==null){
 			findAllExtensionPoints();
 		}
 		
-		return null;
+		Field[] fields = type.getDeclaredFields();
+		for (int i=0;i<fields.length;i++){
+			Field field = fields[i];
+			Class<?>[] implInterfaces = field.getType().getInterfaces();
+			if (implInterfaces.length==0)continue;//不是扩展点的例子，无需实例化
+			
+			Concrete concrete = field.getAnnotation(Concrete.class);
+			Router router = field.getAnnotation(Router.class);
+			for (Class<?> implInt:implInterfaces){
+				if (EXTENSION_POINT.containsKey(implInt)){
+					Object fieldInstance = null;
+					if (concrete!=null){
+						fieldInstance = ExtensionManager.getInstance(implInt).getExtension(concrete.value());
+					}else if (router!=null){
+						fieldInstance = ExtensionManager.getInstance(implInt).getExtensionAdaptor(router.value());
+					}else{
+						fieldInstance = ExtensionManager.getInstance(implInt).getExtension();
+					}
+					try {
+						field.set(instance, fieldInstance);
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+						throw new SystemException(e);
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+						throw new SystemException(e);
+					}
+					
+					break;
+				}
+			}
+		}
+		
+		return instance;
 	}
 	private void findAllExtensionPoints(){
 		EXTENSION_POINT = new ConcurrentHashMap<Class<?>, Class<?>>();
