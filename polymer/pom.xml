@@ -17,5 +17,6 @@
 		<module>polymer-foundation</module>
 		<module>polymer-gateway</module>
     <module>polymer-admin</module>
+    <module>polymer-authentication</module>
   </modules>
 </project>

@@ -7,13 +7,11 @@
     <artifactId>polymer</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <groupId>com.payadd</groupId>
   <artifactId>polymer-admin</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>polymer-admin</name>
-  <url>http://maven.apache.org</url>
+  <name>${project.artifactId}</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<skip_maven_deploy>true</skip_maven_deploy>
   </properties>
   <dependencies>
     <dependency>

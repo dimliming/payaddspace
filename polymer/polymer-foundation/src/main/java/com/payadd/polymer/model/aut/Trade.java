@@ -21,8 +21,11 @@ public class Trade {
 	private String merchantTradeNO;
 	//渠道交易号
 	private String channelTradeNo;//视渠道返回情况，可为空
+	
 	//渠道代号
-	private String channelCode;
+	private String productCode;
+	
+	private String agencyCode;
 	//交易时间
 	private Timestamp tradeTime;
 	//验证方式
@@ -42,9 +45,9 @@ public class Trade {
 	 //是否已核销
 	private char isWriteOff;//Y-是,N-否
 	//渠道应答码
-	private String channelRespCode;
+	private String respCode;
 	//渠道应答消息
-	private String channelRespMsg;
+	private String respMsg;
 	//状态
 	private int status;//0-未提交渠道,1-已提交渠道,2-认证失败,3-认证成功
 	//商户通知URL
@@ -86,13 +89,14 @@ public class Trade {
 	public void setChannelTradeNo(String channelTradeNo) {
 		this.channelTradeNo = channelTradeNo;
 	}
-	public String getChannelCode() {
-		return channelCode;
-	}
-	public void setChannelCode(String channelCode) {
-		this.channelCode = channelCode;
-	}
 
+
+	public String getAgencyCode() {
+		return agencyCode;
+	}
+	public void setAgencyCode(String agencyCode) {
+		this.agencyCode = agencyCode;
+	}
 	public Timestamp getTradeTime() {
 		return tradeTime;
 	}
@@ -147,17 +151,18 @@ public class Trade {
 	public void setIsWriteOff(char isWriteOff) {
 		this.isWriteOff = isWriteOff;
 	}
-	public String getChannelRespCode() {
-		return channelRespCode;
+
+	public String getRespCode() {
+		return respCode;
 	}
-	public void setChannelRespCode(String channelRespCode) {
-		this.channelRespCode = channelRespCode;
+	public void setRespCode(String respCode) {
+		this.respCode = respCode;
 	}
-	public String getChannelRespMsg() {
-		return channelRespMsg;
+	public String getRespMsg() {
+		return respMsg;
 	}
-	public void setChannelRespMsg(String channelRespMsg) {
-		this.channelRespMsg = channelRespMsg;
+	public void setRespMsg(String respMsg) {
+		this.respMsg = respMsg;
 	}
 	public int getStatus() {
 		return status;
@@ -188,6 +193,12 @@ public class Trade {
 	}
 	public void setNotifyTime(Timestamp notifyTime) {
 		this.notifyTime = notifyTime;
+	}
+	public String getProductCode() {
+		return productCode;
+	}
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
 	}
 	
 }

@@ -7,7 +7,8 @@
 		<result property="fullName" column="full_name" />
 		<result property="merchantTradeNO" column="merchant_trade_no" />
 		<result property="channelTradeNo" column="channel_trade_no" />
-		<result property="channelCode" column="channel_code" />
+		<result property="agencyCode" column="agency_code" />
+		<result property="productCode" column="product_code" />
 		<result property="tradeTime" column="trade_time" />
 		<result property="authType" column="auth_type" />
 		<result property="accountNo" column="account_no" />
@@ -17,8 +18,8 @@
 		<result property="phone" column="phone" />
 		<result property="fee" column="fee" />
 		<result property="isWriteOff" column="is_write_off" />
-		<result property="channelRespCode" column="channel_resp_code" />
-		<result property="channelRespMsg" column="channel_resp_msg" />
+		<result property="respCode" column="resp_code" />
+		<result property="respMsg" column="resp_msg" />
 		<result property="status" column="status" />
 		<result property="notifyUrl" column="notify_url" />
 		<result property="notifyStatus" column="notify_status" />
