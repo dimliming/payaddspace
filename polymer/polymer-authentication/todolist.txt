@@ -1,3 +1,7 @@
 1.接口规范（认证、查询），签名验签规范
 2.错误码与对应表格
 3.渠道错误码与系统错误码对应关系
+4.spring BeanPostProcessor扩展
+5.gateway中controller、service、xml配置编写，定时器编写
+6.admin编写
+7.merchant商户后台编写
