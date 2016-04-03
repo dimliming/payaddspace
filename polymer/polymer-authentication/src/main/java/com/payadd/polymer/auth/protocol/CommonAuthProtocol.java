@@ -4,8 +4,8 @@ import com.payadd.framework.common.extension.ExtensionDescription;
 import com.payadd.framework.ddl.DatabaseFacade;
 import com.payadd.polymer.auth.layer.AuthProduct;
 import com.payadd.polymer.auth.layer.AuthProtocol;
+import com.payadd.polymer.model.aut.AuthResult;
 import com.payadd.polymer.model.common.RawMessage;
-import com.payadd.polymer.model.common.Result;
 
 @ExtensionDescription(code="common",name="通用认证接口对接协议")
 public class CommonAuthProtocol implements AuthProtocol {
@@ -14,7 +14,7 @@ public class CommonAuthProtocol implements AuthProtocol {
 	/**
 	 * 在调用这个方法前，应该在controller中将消息转成RawMessage对象，
 	 * */
-	public Result auth(DatabaseFacade facade,RawMessage msg) {
+	public AuthResult auth(DatabaseFacade facade,RawMessage msg) {
 		//1.所有报文字段校验，如果通不过，组装错误信息到Result，返回
 		//2.验证签名，验证不通过就组装Result，返回
 		//3.组装MerchantMessage，报文类型设置为1，并保存到数据库中(需要保存后就直接commit)
@@ -26,7 +26,7 @@ public class CommonAuthProtocol implements AuthProtocol {
 		return null;
 	}
 
-	public Result enquiry(DatabaseFacade facade,RawMessage msg) {
+	public AuthResult enquiry(DatabaseFacade facade,RawMessage msg) {
 		//1.所有报文字段校验，如果通不过，组装错误信息到Result，返回
 		//2.验证签名，验证不通过就组装Result，返回
 		//3.组装MerchantMessage，报文类型设置为2，并保存到数据库中(需要保存后就直接commit)

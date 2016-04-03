@@ -4,14 +4,14 @@ import com.payadd.framework.common.extension.ExtensionDescription;
 import com.payadd.framework.ddl.DatabaseFacade;
 import com.payadd.polymer.auth.layer.AuthAgency;
 import com.payadd.polymer.auth.layer.AuthProduct;
+import com.payadd.polymer.model.aut.AuthResult;
 import com.payadd.polymer.model.aut.Trade;
-import com.payadd.polymer.model.common.Result;
 
 @ExtensionDescription(code="common",name="通用实名认证产品")
 public class CommonAuthProduct implements AuthProduct {
 	private AuthAgency agency;
 	
-	public Result auth(DatabaseFacade facade, Trade trade) {
+	public AuthResult auth(DatabaseFacade facade, Trade trade) {
 		//1.检查是否有重复的商户订单号，如果有，封装错误信息返回
 		//2.生成trade_no
 		//3.初始化trade的状态为0-未提交渠道，product_code="common"
@@ -26,7 +26,7 @@ public class CommonAuthProduct implements AuthProduct {
 		return null;
 	}
 
-	public Result enquiry(DatabaseFacade facade, String merchaneCode, String merchantTradeNo) {
+	public AuthResult enquiry(DatabaseFacade facade, String merchaneCode, String merchantTradeNo) {
 		//1.根据merchaneCode和merchantTradeNo查询trade
 		//2.如果trade==null，封装错误信息返回
 		//3.如果trade的状态=2-已提交渠道，那么调用agency.enquiry获取最新的状态

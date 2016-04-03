@@ -3,5 +3,5 @@
 3.渠道错误码与系统错误码对应关系
 4.spring BeanPostProcessor扩展
 5.gateway中controller、service、xml配置编写，定时器编写
-6.admin编写
+6.admin运营后台编写
 7.merchant商户后台编写

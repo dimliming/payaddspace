@@ -4,13 +4,13 @@ import com.payadd.framework.common.extension.ExtensionDescription;
 import com.payadd.framework.ddl.DatabaseFacade;
 import com.payadd.polymer.auth.layer.AuthDocking;
 import com.payadd.polymer.model.aut.AuthDockingConfig;
+import com.payadd.polymer.model.aut.AuthResult;
 import com.payadd.polymer.model.aut.Trade;
-import com.payadd.polymer.model.common.Result;
 
-@ExtensionDescription(code="shengda",name="盛大")
+@ExtensionDescription(code="shengda",name="盛大认证接口")
 public class ShengDaAuthDocking implements AuthDocking {
 
-	public Result auth(DatabaseFacade facade, Trade trade, AuthDockingConfig config) {
+	public AuthResult auth(DatabaseFacade facade, Trade trade, AuthDockingConfig config) {
 		//1.组装认证报文
 		//2.签名
 		//3.发送报文
@@ -21,7 +21,7 @@ public class ShengDaAuthDocking implements AuthDocking {
 		return null;
 	}
 
-	public Result enquiry(DatabaseFacade facade, Trade trade, AuthDockingConfig config) {
+	public AuthResult enquiry(DatabaseFacade facade, Trade trade, AuthDockingConfig config) {
 		//1.组装查询报文
 		//2.签名
 		//3.发送报文
