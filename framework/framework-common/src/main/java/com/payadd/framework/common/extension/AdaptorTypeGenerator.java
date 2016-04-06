@@ -126,7 +126,6 @@ public class AdaptorTypeGenerator {
 		System.out.println(String.class.getName());
 		System.out.println(String.class.getCanonicalName());
 		System.out.println(String.class.getSimpleName());
-		System.out.println(String.class.getTypeName());
 		
 		Method[] methods = AdaptorTypeGenerator.class.getMethods();
 		for (Method method:methods){
