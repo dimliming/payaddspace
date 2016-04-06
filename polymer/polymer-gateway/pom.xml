@@ -17,6 +17,11 @@
   <dependencies>
     <dependency>
       <groupId>com.payadd</groupId>
+      <artifactId>polymer-authentication</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.payadd</groupId>
       <artifactId>polymer-foundation</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
