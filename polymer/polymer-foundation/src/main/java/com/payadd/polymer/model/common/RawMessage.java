@@ -1,11 +1,11 @@
 package com.payadd.polymer.model.common;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class RawMessage {
-	private Map<String,String> fieldMap = new HashMap<String, String>();
+	private Map<String,String> fieldMap = new TreeMap<String, String>();
 	
 	public RawMessage() {
 	}
@@ -20,4 +20,10 @@ public class RawMessage {
 	public Iterator<String> allField(){
 		return  fieldMap.keySet().iterator();
 	}
+
+	public Map<String, String> getFieldMap() {
+		return fieldMap;
+	}
+
+	
 }
