@@ -6,10 +6,13 @@ import java.util.List;
 
 import com.payadd.framework.common.extension.ExtensionDescription;
 import com.payadd.framework.ddl.DatabaseFacade;
+import com.payadd.framework.ddl.query.SimpleQuery;
 import com.payadd.polymer.auth.layer.AuthAgency;
 import com.payadd.polymer.auth.layer.AuthProduct;
+import com.payadd.polymer.auth.protocol.AuthResultHelper;
 import com.payadd.polymer.model.aut.AuthResult;
 import com.payadd.polymer.model.aut.Trade;
+import com.payadd.polymer.model.bdm.Merchant;
 
 @ExtensionDescription(code = "common", name = "通用实名认证产品")
 public class CommonAuthProduct implements AuthProduct {
@@ -18,38 +21,50 @@ public class CommonAuthProduct implements AuthProduct {
 	public AuthResult auth(DatabaseFacade facade, Trade trade) {
 		// 1.检查是否有重复的商户订单号，如果有，封装错误信息返回
 		AuthResult result = new AuthResult();
-		boolean isRepeat = facade.equals("merchantTradeNO");
-		facade.commit();
-		if (isRepeat) {
-			result.setReturnMsg("resp_code=E9&resp_msg=商户订单号重复");
+		SimpleQuery sq = new SimpleQuery(facade,Trade.class);
+		sq.eq("merchantTradeNo", trade.getMerchantTradeNO());
+		sq.eq("merchantCode", trade.getMerchantCode());
+		if (sq.uniqueResult()!=null){
+			result.setReturnMsg("resp_code=E9&resp_msg=商户订单号重复");//TODO:
 			return result;
 		}
 
 		// 2.生成trade_no
-
+		//TODO:trade no generator
+		
 		// 3.初始化trade的状态为0-未提交渠道，product_code="common"
-		trade.setStatus(0);
+		trade.setStatus(0);//TODO:constant
 		trade.setProductCode("common");
 		// 4.默认设置is_write_off=N，notify_status=1，resp_code=null，resp_msg=null，notify_status=0，fee=手续费
-		trade.setIsWriteOff('N');
+		trade.setIsWriteOff('N');//TODO:
 		trade.setNotifyStatus(1);
 		trade.setRespCode(null);
 		trade.setRespMsg(null);
 		trade.setNotifyStatus(0);
 		trade.setFee(BigDecimal.valueOf(0.2));
-		// 5.判断商户状态，如果商户状态不正常，那么将status=1-交易终止，resp_code=E1001，resp_msg=商户状态不正常，保存trade到数据库中，返回
-
+		// 5.判断商户状态，如果商户状态不正常，那么将status=1-交易终止，resp_code=120001，resp_msg=商户状态异常或商户不存在，保存trade到数据库中，返回
+		SimpleQuery mercSq = new SimpleQuery(facade,Merchant.class);
+		mercSq.eq("merchantCode", trade.getMerchantCode());
+		Merchant merchant = (Merchant)mercSq.uniqueResult();
+		if (!"1".equals(merchant.getStatus())){
+			//TODO:
+		}
 		// 6.如果校验通过，保存trade到数据库中
-
+		facade.insert(trade);
+		
 		// 7.调用agency进行认证请求发送
 		AuthResult agencyResult = agency.auth(facade, trade);
-		// 8.根据返回的结果，更新channel_trade_no、channel_code、resp_code、resp_msg、
-
+		
 		// 9.将返回的状态码，更新status，将notify_status设置为1-已反馈
-
+		if (AuthResultHelper.isSuccess(agencyResult)){
+			trade.setStatus(4);
+		}else{
+			trade.setStatus(3);
+		}
 		// 10.更新trade到数据库
+		facade.update(trade);
 		// 11.反馈结果给上一层
-		return null;
+		return agencyResult;
 	}
 
 	public AuthResult enquiry(DatabaseFacade facade, String merchaneCode, String merchantTradeNo) {

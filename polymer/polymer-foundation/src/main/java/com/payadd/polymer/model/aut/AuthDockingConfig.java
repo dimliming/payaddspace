@@ -4,6 +4,8 @@ public class AuthDockingConfig {
 	private String authURL;
 	private String enquiryURL;
 	private String md5Key;
+	private String subMerchantCode;
+	
 	public String getAuthURL() {
 		return authURL;
 	}
@@ -21,6 +23,12 @@ public class AuthDockingConfig {
 	}
 	public void setMd5Key(String md5Key) {
 		this.md5Key = md5Key;
+	}
+	public String getSubMerchantCode() {
+		return subMerchantCode;
+	}
+	public void setSubMerchantCode(String subMerchantCode) {
+		this.subMerchantCode = subMerchantCode;
 	}
 	
 	

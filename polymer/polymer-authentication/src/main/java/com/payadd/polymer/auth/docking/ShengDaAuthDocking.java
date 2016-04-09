@@ -15,6 +15,7 @@ public class ShengDaAuthDocking implements AuthDocking {
 		//2.签名
 		//3.发送报文
 		//4.获取返回报文，解析，验签，验签不通过，组装错误信息返回
+		// 8.根据返回的结果，更新channel_trade_no、channel_code、resp_code、resp_msg到trade
 		//5.记录ChannelMessage日志信息
 		//6.获取认证结果
 		//7.将结果封装到Result，返回
