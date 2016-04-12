@@ -4,8 +4,6 @@ package com.payadd.polymer.auth.utils;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 
-import java.io.UnsupportedEncodingException;
-
 /**
  * Created by qjj on 15-11-1.
  */

@@ -6,13 +6,13 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.payadd.framework.common.extension.ExtensionDescription;
 import com.payadd.framework.ddl.DatabaseFacade;
 import com.payadd.framework.ddl.query.SimpleQuery;
+import com.payadd.polymer.auth.constant.MessageFields;
 import com.payadd.polymer.auth.constant.MessageType;
+import com.payadd.polymer.auth.constant.SystemRespCode;
 import com.payadd.polymer.auth.layer.AuthProduct;
 import com.payadd.polymer.auth.layer.AuthProtocol;
 import com.payadd.polymer.auth.utils.SignUtil;
@@ -26,17 +26,18 @@ import com.payadd.polymer.model.common.RawMessage;
 @ExtensionDescription(code = "common", name = "通用认证接口对接协议")
 public class CommonAuthProtocol implements AuthProtocol {
 	private AuthProduct product;
+
 	/**
 	 * 在调用这个方法前，应该在controller中将消息转成RawMessage对象，
 	 */
 	public AuthResult auth(DatabaseFacade facade, RawMessage msg) {
 		Map<String, String> map = msg.getFieldMap();
-		String merchantCode = map.get("merchant_code");
-		String merchantTradeNo = map.get("order_no");
-		
+		String merchantCode = map.get(MessageFields.MERCHANT_CODE);
+		String merchantTradeNo = map.get(MessageFields.ORDER_NO);
+
 		// 3.组装MerchantMessage，报文类型设置为1，并保存到数据库中(需要保存后就直接commit)
 		MerchantMessage merchantMessage = new MerchantMessage();
-		Long id = null;//TODO:generate id
+		Long id = null;// TODO:generate id
 		merchantMessage.setId(id);
 		merchantMessage.setMerchantTradeNo(merchantTradeNo);
 		merchantMessage.setMsgType(MessageType.AUTH);
@@ -44,70 +45,69 @@ public class CommonAuthProtocol implements AuthProtocol {
 		String reqMsg = SignUtil.coverMap2String(map);
 		merchantMessage.setReqMsg(reqMsg);
 		facade.insert(merchantMessage);
-		
-		// 1)准备好Result
-		// 定义必需字段
-		String[] strs = { "version", "signature", "encoding", "txn_type", "merchant_code", "order_no", "trade_time",
-				"auth_type", "account_type", "account_no" };
 
-		ArrayList<String> list = (ArrayList<String>) Arrays.asList(strs);
-		AuthResult result = validate(list,msg);
-		
+		// 定义必需字段
+
+		ArrayList<String> list = (ArrayList<String>) Arrays.asList(MessageFields.AUTH_FIELDS);
+		AuthResult result = validate(list, msg);
+
 		// 1.所有报文字段校验，如果通不过，组装错误信息到Result，返回
-		if (result.getResultCode()!=null){
+		if (result.getResultCode() != null) {
 			merchantMessage.setRespMsg(result.getReturnMsg());
 			facade.update(merchantMessage);
-			
+
 			return result;
 		}
 		// 2.验证签名，验证不通过就组装Result，返回
-		
-
+		// 得到商户signKey
 		SimpleQuery sq = new SimpleQuery(facade, MerchantSecurity.class);
-		sq.eq("merchantCode", map.get("merchant_code"));
-		MerchantSecurity mercSec = (MerchantSecurity)sq.uniqueResult();
-		if (mercSec==null){
-			result.setResultCode("999999");
+		sq.eq("merchantCode", map.get(MessageFields.MERCHANT_CODE));
+		MerchantSecurity mercSec = (MerchantSecurity) sq.uniqueResult();
+		if (mercSec == null) {
+			result.setResultCode(SystemRespCode.OPERATE_EXCEPTION);
 			result.setResultDesc(AuthResultHelper.getDesc(result.getResultCode()));
-			result.setReturnMsg("resp_code="+result.getResultCode()+"&resp_msg="+result.getResultDesc());
-			
+			result.setReturnMsg("resp_code=" + result.getResultCode() + "&resp_msg=" + result.getResultDesc());
+
 			merchantMessage.setRespMsg(result.getReturnMsg());
 			facade.update(merchantMessage);
-			
+
 			return result;
 		}
-		
-		String signature = map.remove("signature");
+
+		String signature = map.remove(MessageFields.SIGNATURE);
 		String signData = SignUtil.signData(map, mercSec.getSignKey());
 		if (!signature.equals(signData)) {
-			result.setReturnMsg("resp_code=E3&resp_msg=签名错误");
-			
+			result.setResultCode(SystemRespCode.SIGNATURE_ERR);
+			result.setResultDesc(AuthResultHelper.getDesc(result.getResultCode()));
+			result.setReturnMsg("resp_code=" + result.getResultCode() + "&resp_msg=" + result.getResultDesc());
+
 			merchantMessage.setRespMsg(result.getReturnMsg());
 			facade.update(merchantMessage);
-			
+
 			return result;
 		}
-		
+
 		//
 
 		// 4.组装Trade，调用product.auth
 		Trade trade = new Trade();
-		
+
 		trade.setMerchantCode(merchantCode);
-		trade.setMerchantTradeNO(map.get("order_no"));
-		trade.setAuthType(map.get("auth_type"));
-		trade.setCertNo(map.get("cert_no"));
-		trade.setCertType(map.get("cert_type"));
-		trade.setAccountNo(map.get("account_no"));
-		trade.setCustomName(map.get("custom_name"));
-		trade.setPhone(map.get("phone"));
-		trade.setTradeTime(Timestamp.valueOf(map.get("trade_time")));
+		trade.setMerchantTradeNO(map.get(MessageFields.ORDER_NO));
+		trade.setAuthType(map.get(MessageFields.AUTH_TYPE));
+		trade.setCertNo(map.get(MessageFields.CERT_NO));
+		trade.setCertType(map.get(MessageFields.CERT_TYPE));
+		trade.setAccountNo(map.get(MessageFields.ACCOUNT_NO));
+		trade.setCustomName(map.get(MessageFields.CUSTOM_NAME));
+		trade.setPhone(map.get(MessageFields.PHONE));
+		trade.setTradeTime(Timestamp.valueOf(map.get(MessageFields.TRADE_TIME)));
 
 		AuthResult productAuthResult = product.auth(facade, trade);
 
 		productAuthResult.setResultDesc(AuthResultHelper.getDesc(productAuthResult.getResultCode()));
-		productAuthResult.setReturnMsg("resp_code="+productAuthResult.getResultCode()+"&resp_msg="+productAuthResult.getResultDesc());
-		
+		productAuthResult.setReturnMsg(
+				"resp_code=" + productAuthResult.getResultCode() + "&resp_msg=" + productAuthResult.getResultDesc());
+
 		// 8.更新MerchantMessage的反馈报文字段
 		merchantMessage.setRespMsg(productAuthResult.getReturnMsg());
 		facade.update(merchantMessage);
@@ -116,212 +116,222 @@ public class CommonAuthProtocol implements AuthProtocol {
 	}
 
 	public AuthResult enquiry(DatabaseFacade facade, RawMessage msg) {
-		// 定义必需字段
-		String[] strs = { "version", "signature", "encoding", "txn_type", "merchant_code", "order_no" };
-
+		MerchantMessage merchantMessage = new MerchantMessage();
 		// 1.所有报文字段校验，如果通不过，组装错误信息到Result，返回
-		ArrayList<String> list = (ArrayList<String>) Arrays.asList(strs);
+		ArrayList<String> list = (ArrayList<String>) Arrays.asList(MessageFields.ENQUIRY_FIELDS);
 		// 1)准备好Result
-		AuthResult result = validate(list,msg);
-		if (result.getResultCode()!=null){
-			//TODO:
+		AuthResult result = validate(list, msg);
+		if (result.getResultCode() != null) {
+			// TODO:
+			merchantMessage.setRespMsg(result.getReturnMsg());
+			facade.update(merchantMessage);
+
 			return result;
 		}
-
-		
 		// 2.验证签名，验证不通过就组装Result，返回
-		//TODO:
+		// TODO:
 		Map<String, String> map = msg.getFieldMap();
-		String signature = map.remove("signature");
-		String merchantCode = map.get("merchant_code");
-		String merchantTradeNo =  map.get("order_no");
+		String signature = map.remove(MessageFields.SIGNATURE);
+		String merchantCode = map.get(MessageFields.MERCHANT_CODE);
+		String merchantTradeNo = map.get(MessageFields.ORDER_NO);
 		List<String> querylist = new ArrayList<String>();
 		querylist.add(merchantCode);
 
-		String signKey = (String) facade.queryOne("select sign_key from bdm_merchant_security where merchant_code=",
-				querylist);
-		facade.commit();
-		String signData = SignUtil.signData(map, signKey);
+		SimpleQuery sq = new SimpleQuery(facade, MerchantSecurity.class);
+		sq.eq("merchantCode", map.get(MessageFields.MERCHANT_CODE));
+		MerchantSecurity mercSec = (MerchantSecurity) sq.uniqueResult();
+		if (mercSec == null) {
+			result.setResultCode(SystemRespCode.OPERATE_EXCEPTION);
+			result.setResultDesc(AuthResultHelper.getDesc(result.getResultCode()));
+			result.setReturnMsg("resp_code=" + result.getResultCode() + "&resp_msg=" + result.getResultDesc());
+
+			merchantMessage.setRespMsg(result.getReturnMsg());
+			facade.update(merchantMessage);
+
+			return result;
+		}
+		String signData = SignUtil.signData(map, mercSec.getSignKey());
 		if (!signature.equals(signData)) {
-			result.setReturnMsg("resp_code=E3&resp_msg=签名错误");
+			result.setResultCode(SystemRespCode.SIGNATURE_ERR);
+			result.setResultDesc(AuthResultHelper.getDesc(result.getResultCode()));
+			result.setReturnMsg("resp_code=" + result.getResultCode() + "&resp_msg=" + result.getResultDesc());
+
+			merchantMessage.setRespMsg(result.getReturnMsg());
+			facade.update(merchantMessage);
 			return result;
 		}
 		// 3.组装MerchantMessage，报文类型设置为2，并保存到数据库中(需要保存后就直接commit)
-		MerchantMessage merchantMessage = new MerchantMessage();
-		//id
-		//merchantTradeNo
+		// id
+		merchantMessage.setMerchantTradeNo(merchantTradeNo);
 		merchantMessage.setMsgType(MessageType.ENQUIRY);
 		merchantMessage.setMerchantCode(merchantCode);
 		String reqMsg = SignUtil.coverMap2String(map);
 		merchantMessage.setReqMsg(reqMsg);
 		facade.insert(merchantMessage);
 		// 4.调用product.enquiry
-		result = product.enquiry(facade, merchantCode,merchantTradeNo);
+		result = product.enquiry(facade, merchantCode, merchantTradeNo);
 		// 5.根据返回的结果，组装反馈报文，放到Result中，
-		
+		result.setResultDesc(AuthResultHelper.getDesc(result.getResultCode()));
+		result.setReturnMsg("resp_code=" + result.getResultCode() + "&resp_msg=" + result.getResultDesc());
 		// 6.更新MerchantMessage的反馈报文字段
-		//TODO:set resp message
+		merchantMessage.setRespMsg(result.getReturnMsg());
 		facade.update(merchantMessage);
 		// 7.返回Result
 		return result;
 	}
-	
-	private AuthResult validate(List<String> fieldList,RawMessage msg){
-		
-				
+
+	private AuthResult validate(List<String> fieldList, RawMessage msg) {
+
 		AuthResult result = new AuthResult();
 		Iterator<String> fieldIterator = fieldList.iterator();
-		// 判断是否为空报文
+		if (!fieldIterator.hasNext()) {
+			result.setResultCode(SystemRespCode.MESSAGE_NULL);
+			return result;
+		}
 		while (fieldIterator.hasNext()) {
 
 			String key = fieldIterator.next().trim();
 			String value = msg.getField(key).trim();
 
 			switch (key) {
-			case "version":
+			case MessageFields.VERSION:
 				if (!("1.0.0".equals(value))) {
 					// xx字段格式错误
-					result.setResultCode("");
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
-			case "signature":
+			case MessageFields.SIGNATURE:
 				if (!ValidatorUtil.isInlength(value.trim(), 1, 1024)) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
-			case "encoding":
+			case MessageFields.ENCODING:
 				if ("".equals(value)) {
 					// 如果编码为空,默认为UTF-8
 					msg.addField(key, "UTF-8");
 				}
 				break;
-			case "txn_type":
-				if (!"00".equals(value)) {
-					// xx字段格式错误
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+			case MessageFields.TXN_TYPE:
+				if (!("00".equals(value) || "01".equals(value))) {
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
-			case "merchant_code":
+			case MessageFields.MERCHANT_CODE:
 				if (!ValidatorUtil.isInlength(value, 32)) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				if (!(ValidatorUtil.hasLetter(value)
 						&& (ValidatorUtil.hasSlash(value) || ValidatorUtil.hasDigit(value)))) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
-			case "order_no":
+			case MessageFields.ORDER_NO:
 				if (!ValidatorUtil.isInlength(value, 6, 40)) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				if (!(ValidatorUtil.hasLetter(value)
 						&& (ValidatorUtil.hasSlash(value) || ValidatorUtil.hasDigit(value)))) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
-			case "trade_time":
+			case MessageFields.TRADE_TIME:
 				if (!ValidatorUtil.isValidDate(value)) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
-			case "auth_type":
+			case MessageFields.AUTH_TYPE:
 				String[] authTypes = { "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111" };
 				ArrayList<String> authTypeList = (ArrayList<String>) Arrays.asList(authTypes);
 
 				if (!authTypeList.contains(value)) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 
 				if (value.charAt(0) == '1') {
-					if (msg.getField("account_no") == null) {
-						result.setReturnMsg("resp_code=&resp_msg=报文格式错误");
+					if (msg.getField(MessageFields.ACCOUNT_NO) == null) {
+						result.setResultCode(SystemRespCode.MESSAGE_ERR);
 						return result;
 					}
 				}
 				if (value.charAt(1) == '1') {
-					if (msg.getField("cert_no") == null) {
-						result.setReturnMsg("resp_code=&resp_msg=报文格式错误");
-						return result;
+					if (msg.getField(MessageFields.CERT_NO) == null) {
+						result.setResultCode(SystemRespCode.MESSAGE_ERR);
 					}
 				}
 				if (value.charAt(2) == '1') {
-					if (msg.getField("custom_name") == null) {
-						result.setReturnMsg("resp_code=&resp_msg=报文格式错误");
-						return result;
+					if (msg.getField(MessageFields.CUSTOM_NAME) == null) {
+						result.setResultCode(SystemRespCode.MESSAGE_ERR);
 					}
 				}
 				if (value.charAt(3) == '1') {
-					if (msg.getField("phone") == null) {
-						result.setReturnMsg("resp_code=&resp_msg=报文格式错误");
-						return result;
+					if (msg.getField(MessageFields.PHONE) == null) {
+						result.setResultCode(SystemRespCode.MESSAGE_ERR);
 					}
 				}
 				break;
-			case "account_type":
+			case MessageFields.ACCOUNT_TYPE:
 				if (!"01".equals(value)) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
-			case "account_no":
+			case MessageFields.ACCOUNT_NO:
 				if (!ValidatorUtil.isInlength(value, 1, 60)) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				if (!(ValidatorUtil.hasLetter(value)
 						&& (ValidatorUtil.hasSlash(value) || ValidatorUtil.hasDigit(value)))) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
-			case "cert_type":
+			case MessageFields.CERT_TYPE:
 				String[] certTypes = { "01", "02", "03", "04", "05", "06", "07", "99" };
 				ArrayList<String> certTypeList = (ArrayList<String>) Arrays.asList(certTypes);
 				if (!certTypeList.contains(value)) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
-			case "cert_no":
+			case MessageFields.CERT_NO:
 				if (!ValidatorUtil.isInlength(value, 1, 20)) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
-			case "custom_name":
+			case MessageFields.CUSTOM_NAME:
 				if (!ValidatorUtil.isInlength(value, 1, 32)) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
-			case "phone":
+			case MessageFields.PHONE:
 				if (!ValidatorUtil.isMobile(value)) {
-					result.setReturnMsg("resp_code=&resp_msg=" + key + "字段格式错误");
-					return result;
+					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
 
 			default:
-				result.setReturnMsg("resp_code=F2&resp_msg=报文格式错误");
-				return result;
+				result.setResultCode(SystemRespCode.MESSAGE_ERR);
 
 			}
 
+			if (fieldList.contains(key)) {
+				fieldList.remove(key);
+			}
+			if (result.getResultCode() != null) {
+				result.setResultDesc(AuthResultHelper.getDesc(result.getResultCode()));
+				if (SystemRespCode.FIELD_FORMAT_ERR.equals(result.getResultCode())) {
+					result.setReturnMsg(
+							"resp_code=" + result.getResultCode() + "&resp_msg=" + key + result.getResultDesc());
+				} else {
+
+					result.setReturnMsg("resp_code=" + result.getResultCode() + "&resp_msg=" + result.getResultDesc());
+				}
+
+				return result;
+			}
 		}
-		if (result.getResultCode()!=null){
-			result.setResultDesc(AuthResultHelper.getDesc(result.getResultCode()));
-			result.setReturnMsg("resp_code="+result.getResultCode()+"&resp_msg="+result.getResultDesc());
+		if (!fieldList.isEmpty()) {
+			result.setResultCode(SystemRespCode.MESSAGE_ERR);
+			result.setReturnMsg("resp_code=" + result.getResultCode() + "&resp_msg=" + result.getResultDesc());
 		}
+
 		return result;
 	}
 
