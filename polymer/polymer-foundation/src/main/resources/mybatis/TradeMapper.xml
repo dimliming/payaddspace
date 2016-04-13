@@ -25,6 +25,7 @@
 		<result property="notifyStatus" column="notify_status" />
 		<result property="notifyNum" column="notify_num" />
 		<result property="notifyTime" column="notify_time" />
+		<result property="isTest" column="is_test" />
 
 		<!-- <result property="transferChannelCode" column="transfer_channel_code"/> -->
 	</resultMap>

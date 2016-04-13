@@ -1,14 +1,20 @@
 package com.payadd.polymer.auth.docking;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import com.payadd.framework.common.extension.ExtensionDescription;
+import com.payadd.framework.common.toolkit.IdGenerator;
 import com.payadd.framework.ddl.DatabaseFacade;
 import com.payadd.framework.ddl.query.SimpleQuery;
 import com.payadd.polymer.auth.constant.MessageFields;
+import com.payadd.polymer.auth.constant.MessageType;
 import com.payadd.polymer.auth.constant.SystemRespCode;
 import com.payadd.polymer.auth.layer.AuthDocking;
 import com.payadd.polymer.auth.protocol.AuthResultHelper;
@@ -16,6 +22,7 @@ import com.payadd.polymer.auth.utils.HttpClient;
 import com.payadd.polymer.auth.utils.SignUtil;
 import com.payadd.polymer.model.aut.AuthDockingConfig;
 import com.payadd.polymer.model.aut.AuthResult;
+import com.payadd.polymer.model.aut.ChannelMessage;
 import com.payadd.polymer.model.aut.Trade;
 import com.payadd.polymer.model.bdm.MerchantSecurity;
 
@@ -55,8 +62,9 @@ public class ShengDaAuthDocking implements AuthDocking {
 		contentData.put("signature", sign);
 		// 3.发送报文
 		HttpClient client = new HttpClient(config.getAuthURL(), 6000, 60000);
+		String reqMsg = getRequestParamString(contentData,"utf-8");
 		try {
-			client.send(contentData, "utf-8");
+			client.send(reqMsg, "utf-8");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -74,17 +82,23 @@ public class ShengDaAuthDocking implements AuthDocking {
 			return result;
 		}
 		// 8.根据返回的结果，更新channel_trade_no、channel_code、resp_code、resp_msg到trade
-		// TODO:channel_code
-		trade.setChannelTradeNo(responsMap.get("orderId"));
-		trade.setRespCode(responsMap.get("respCode"));
-		trade.setRespMsg("respMsg");
+		trade.setChannelTradeNo(responsMap.get("queryId"));
+		trade.setRespCode(respCodeTranslate(responsMap.get("respCode")));
+		trade.setRespMsg(responsMap.get("respMsg"));
 
 		// 5.记录ChannelMessage日志信息
-		// TODO:记录ChannelMessage日志信息
-		// 6.获取认证结果
-		// TODO:获取认证结果
+		ChannelMessage channelMessage = new ChannelMessage();
+		channelMessage.setId(IdGenerator.nextLongSequence(ChannelMessage.class));
+		channelMessage.setChannelCode("shengda");
+		channelMessage.setMerchantCode(trade.getMerchantCode());
+		channelMessage.setMsgType(MessageType.AUTH);
+		channelMessage.setReqMsg(reqMsg);
+		channelMessage.setRespMsg(respons);
+		channelMessage.setTradeNo(trade.getTradeNo());
+		facade.insert(channelMessage);
+		
 		// 7.将结果封装到Result，返回
-		// TODO:将结果封装到Result，返回
+		result.setResultCode(trade.getRespCode());
 		return result;
 	}
 
@@ -112,11 +126,11 @@ public class ShengDaAuthDocking implements AuthDocking {
 		// 2.签名
 		contentData.put("signature", sign);
 		// 3.发送报文
-		HttpClient client = new HttpClient("http://127.0.0.1:8080/auth.htm", 6000, 60000);
+		HttpClient client = new HttpClient(config.getEnquiryURL(), 6000, 60000);
+		String reqMsg = getRequestParamString(contentData,"utf-8");
 		try {
-			client.send(contentData, "utf-8");
+			client.send(reqMsg, "utf-8");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		String respons = client.getResult();
@@ -132,12 +146,51 @@ public class ShengDaAuthDocking implements AuthDocking {
 			return result;
 		}
 		// 5.记录ChannelMessage日志信息
-		// TODO:记录ChannelMessage日志信息
-		// 6.获取认证结果
-		// TODO:获取认证结果
+		ChannelMessage channelMessage = new ChannelMessage();
+		channelMessage.setId(IdGenerator.nextLongSequence(ChannelMessage.class));
+		channelMessage.setChannelCode("shengda");
+		channelMessage.setMerchantCode(trade.getMerchantCode());
+		channelMessage.setMsgType(MessageType.ENQUIRY);
+		channelMessage.setReqMsg(reqMsg);
+		channelMessage.setRespMsg(respons);
+		channelMessage.setTradeNo(trade.getTradeNo());
+		facade.insert(channelMessage);
+
 		// 7.将结果封装到Result，返回
-		// TODO:将结果封装到Result，返回
+		result.setResultCode(respCodeTranslate(trade.getRespCode()));
 		return result;
 	}
+	
+    private String getRequestParamString(Map<String, String> requestParam, String coder) {
+        if(null == coder || "".equals(coder)) {
+            coder = "UTF-8";
+        }
+
+        StringBuffer sf = new StringBuffer("");
+        String reqstr = "";
+        if(null != requestParam && 0 != requestParam.size()) {
+            Iterator i$ = requestParam.entrySet().iterator();
+
+            while(i$.hasNext()) {
+                Entry en = (Entry)i$.next();
+
+                try {
+                    sf.append((String)en.getKey() + "=" + (null != en.getValue() && !"".equals(en.getValue())?URLEncoder.encode((String)en.getValue(), coder):"") + "&");
+                } catch (UnsupportedEncodingException var8) {
+                    var8.printStackTrace();
+                    return "";
+                }
+            }
+
+            reqstr = sf.substring(0, sf.length() - 1);
+        }
+        System.out.println("请求报文:[" + reqstr + "]");
+        return reqstr;
+    }
+    
+    private String respCodeTranslate(String channelRespCode){
+    	//TODO:将渠道的返回码转换为系统的返回码
+    	return null;
+    }
 
 }

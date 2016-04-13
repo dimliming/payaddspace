@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.payadd.framework.common.extension.ExtensionDescription;
+import com.payadd.framework.common.toolkit.IdGenerator;
 import com.payadd.framework.ddl.DatabaseFacade;
 import com.payadd.framework.ddl.query.SimpleQuery;
 import com.payadd.polymer.auth.constant.IsWriteOff;
@@ -41,7 +42,7 @@ public class CommonAuthProduct implements AuthProduct {
 		}
 
 		// 2.生成trade_no
-		// TODO:trade no generator
+		trade.setTradeNo(IdGenerator.nextLongSequence(Trade.class).toString());
 
 		// 3.初始化trade的状态为0-未提交渠道，product_code="common"
 		trade.setStatus(TradeStatus.CHANNAL_UNCOMMIT);// TODO:constant
@@ -112,17 +113,17 @@ public class CommonAuthProduct implements AuthProduct {
 
 	public void writeOff(DatabaseFacade facade) {
 		// 此函数将所有未核销的单据进行核销
-		// 1.查找所有is_write_off=N and status=4的交易，
+		// 1.查找所有is_write_off=N and status=4 and is_test<>Y的交易，
 		SimpleQuery simpleQuery = new SimpleQuery(facade, Trade.class);
 		simpleQuery.eq("isWriteOff", 'N');
-		simpleQuery.eq("isWriteOff", 4);
-		@SuppressWarnings("unchecked")
+		simpleQuery.eq("status", 4);
+		simpleQuery.ne("isTest", "Y");
 		List<Trade> list = simpleQuery.ListEntity();
+		
 		// 2.循环每一条交易
-		SimpleQuery merchantQuery = new SimpleQuery(facade, Account.class);
-
 		for (Trade trade : list) {
 			// 3.检查商户余额是否足够，如果不够，发送邮件给管理员，退出循环
+			SimpleQuery merchantQuery = new SimpleQuery(facade, Account.class);
 			merchantQuery.eq("accountNo", trade.getAccountNo());
 			merchantQuery.eq("merchantCode", trade.getMerchantCode());
 			Account account = (Account) merchantQuery.uniqueResult();

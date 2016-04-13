@@ -58,6 +58,9 @@ public class Trade {
 	private int notifyNum;
 	//反馈时间
 	private Timestamp notifyTime;
+	//是否测试
+	private String isTest;
+	
 	public String getTradeNo() {
 		return tradeNo;
 	}
@@ -199,6 +202,12 @@ public class Trade {
 	}
 	public void setProductCode(String productCode) {
 		this.productCode = productCode;
+	}
+	public String getIsTest() {
+		return isTest;
+	}
+	public void setIsTest(String isTest) {
+		this.isTest = isTest;
 	}
 	
 }

@@ -38,13 +38,13 @@ public class HttpClient {
 
     }
 
-    public int send(Map<String, String> data, String encoding) throws Exception {
+    public int send(String data, String encoding) throws Exception {
         try {
             HttpURLConnection e = this.createConnection(encoding);
             if(null == e) {
                 throw new Exception("创建联接失败");
             } else {
-                this.requestServer(e, this.getRequestParamString(data, encoding), encoding);
+                this.requestServer(e, data, encoding);
                 this.result = this.response(e, encoding);
 
                 System.out.println("返回报文:[" + this.result + "]");
@@ -151,30 +151,5 @@ public class HttpClient {
         }
     }
 
-    private String getRequestParamString(Map<String, String> requestParam, String coder) {
-        if(null == coder || "".equals(coder)) {
-            coder = "UTF-8";
-        }
 
-        StringBuffer sf = new StringBuffer("");
-        String reqstr = "";
-        if(null != requestParam && 0 != requestParam.size()) {
-            Iterator i$ = requestParam.entrySet().iterator();
-
-            while(i$.hasNext()) {
-                Entry en = (Entry)i$.next();
-
-                try {
-                    sf.append((String)en.getKey() + "=" + (null != en.getValue() && !"".equals(en.getValue())?URLEncoder.encode((String)en.getValue(), coder):"") + "&");
-                } catch (UnsupportedEncodingException var8) {
-                    var8.printStackTrace();
-                    return "";
-                }
-            }
-
-            reqstr = sf.substring(0, sf.length() - 1);
-        }
-        System.out.println("请求报文:[" + reqstr + "]");
-        return reqstr;
-    }
 }

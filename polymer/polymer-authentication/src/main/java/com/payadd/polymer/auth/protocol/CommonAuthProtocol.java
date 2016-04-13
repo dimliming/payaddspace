@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.payadd.framework.common.extension.ExtensionDescription;
+import com.payadd.framework.common.toolkit.IdGenerator;
 import com.payadd.framework.ddl.DatabaseFacade;
 import com.payadd.framework.ddl.query.SimpleQuery;
 import com.payadd.polymer.auth.constant.MessageFields;
@@ -37,7 +38,7 @@ public class CommonAuthProtocol implements AuthProtocol {
 
 		// 3.组装MerchantMessage，报文类型设置为1，并保存到数据库中(需要保存后就直接commit)
 		MerchantMessage merchantMessage = new MerchantMessage();
-		Long id = null;// TODO:generate id
+		Long id = IdGenerator.nextLongSequence(MerchantMessage.class);
 		merchantMessage.setId(id);
 		merchantMessage.setMerchantTradeNo(merchantTradeNo);
 		merchantMessage.setMsgType(MessageType.AUTH);
@@ -101,6 +102,7 @@ public class CommonAuthProtocol implements AuthProtocol {
 		trade.setCustomName(map.get(MessageFields.CUSTOM_NAME));
 		trade.setPhone(map.get(MessageFields.PHONE));
 		trade.setTradeTime(Timestamp.valueOf(map.get(MessageFields.TRADE_TIME)));
+		trade.setIsTest(map.get("is_test"));
 
 		AuthResult productAuthResult = product.auth(facade, trade);
 
