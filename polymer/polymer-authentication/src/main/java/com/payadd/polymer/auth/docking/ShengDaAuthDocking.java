@@ -82,7 +82,6 @@ public class ShengDaAuthDocking implements AuthDocking {
 			return result;
 		}
 		// 8.根据返回的结果，更新channel_trade_no、channel_code、resp_code、resp_msg到trade
-<<<<<<< Updated upstream
 		trade.setChannelTradeNo(responsMap.get("queryId"));
 		trade.setRespCode(respCodeTranslate(responsMap.get("respCode")));
 		trade.setRespMsg(responsMap.get("respMsg"));
@@ -98,26 +97,6 @@ public class ShengDaAuthDocking implements AuthDocking {
 		channelMessage.setTradeNo(trade.getTradeNo());
 		facade.insert(channelMessage);
 		
-=======
-		// TODO:channel_code
-		
-		trade.setChannelTradeNo(responsMap.get("orderId"));
-		trade.setRespCode(responsMap.get("respCode"));
-		trade.setRespMsg("respMsg");
-		facade.update(trade);
-		// 5.记录ChannelMessage日志信息
-		ChannelMessage channelMessage = new ChannelMessage();
-		channelMessage.setChannelCode("shengda");
-		channelMessage.setMerchantCode(trade.getMerchantCode());
-		channelMessage.setTradeNo(trade.getTradeNo());
-		channelMessage.setMsgType(1);
-		channelMessage.setRespMsg(trade.getRespMsg());
-		facade.insert(channelMessage);
-		// TODO:记录ChannelMessage日志信息
-		// 6.获取认证结果
-		
-		// TODO:获取认证结果
->>>>>>> Stashed changes
 		// 7.将结果封装到Result，返回
 		result.setResultCode(trade.getRespCode());
 		return result;
@@ -167,7 +146,6 @@ public class ShengDaAuthDocking implements AuthDocking {
 			return result;
 		}
 		// 5.记录ChannelMessage日志信息
-<<<<<<< Updated upstream
 		ChannelMessage channelMessage = new ChannelMessage();
 		channelMessage.setId(IdGenerator.nextLongSequence(ChannelMessage.class));
 		channelMessage.setChannelCode("shengda");
@@ -178,18 +156,6 @@ public class ShengDaAuthDocking implements AuthDocking {
 		channelMessage.setTradeNo(trade.getTradeNo());
 		facade.insert(channelMessage);
 
-=======
-		// TODO:记录ChannelMessage日志信息
-		ChannelMessage channelMessage = new ChannelMessage();
-		channelMessage.setChannelCode("shengda");
-		channelMessage.setMerchantCode(trade.getMerchantCode());
-		channelMessage.setTradeNo(trade.getTradeNo());
-		channelMessage.setMsgType(1);
-		channelMessage.setRespMsg(trade.getRespMsg());
-		facade.insert(channelMessage);
-		// 6.获取认证结果
-		// TODO:获取认证结果
->>>>>>> Stashed changes
 		// 7.将结果封装到Result，返回
 		result.setResultCode(respCodeTranslate(trade.getRespCode()));
 		return result;
@@ -224,7 +190,6 @@ public class ShengDaAuthDocking implements AuthDocking {
 	}
 
 	private String respCodeTranslate(String channelRespCode) {
-		// TODO:将渠道的返回码转换为系统的返回码
 		String respCode = null;
 		switch (channelRespCode) {
 		case "00":

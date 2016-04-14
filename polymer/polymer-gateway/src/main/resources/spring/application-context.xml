@@ -8,6 +8,8 @@
 						http://www.springframework.org/schema/aop classpath:/org/springframework/aop/config/spring-aop-3.0.xsd
 						http://www.springframework.org/schema/context classpath:/org/springframework/context/config/spring-context-3.0.xsd
 						http://www.springframework.org/schema/util classpath:/org/springframework/beans/factory/xml/spring-util-3.0.xsd ">
+	<!-- 定义扩展点动态注入的处理类 -->
+	<bean class="com.payadd.framework.common.spring.ExtensionBeanPostProcessor"/>
 	
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverclass" value="com.mysql.jdbc.Driver" />

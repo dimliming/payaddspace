@@ -262,7 +262,7 @@ public class ExtensionManager<T> {
 		
 		return instance;
 	}
-	private void findAllExtensionPoints(){
+	private static void findAllExtensionPoints(){
 		EXTENSION_POINT = new ConcurrentHashMap<Class<?>, Class<?>>();
 		//查找所有注解为Multiple的interface
 		List<Class<?>> list = AnnotationScanner.scan(Multiple.class);
@@ -304,7 +304,12 @@ public class ExtensionManager<T> {
 		
 	}
 	
-	
+	public static boolean isExtensionPoint(Class type){
+		if (EXTENSION_POINT==null){
+			findAllExtensionPoints();
+		}
+		return EXTENSION_POINT.containsKey(type);
+	}
 	
 	
 }
