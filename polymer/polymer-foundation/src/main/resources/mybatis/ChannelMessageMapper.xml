@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="">
-	<resultMap type="com.payadd.polymer.model.aut.MerchantMessage"
-		id="MerchantMessageResultMap">
+	<resultMap type="com.payadd.polymer.model.aut.ChannelMessage" id="ChannelMessageResultMap">
 		<id property="id" column="id" />
 		<result property="tradeNo" column="trade_no" />
 		<result property="channelCode" column="channel_code" />

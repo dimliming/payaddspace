@@ -12,7 +12,7 @@
 	<bean class="com.payadd.framework.common.spring.ExtensionBeanPostProcessor"/>
 	
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-		<property name="driverclass" value="com.mysql.jdbc.Driver" />
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
 		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/polymer?useUnicode=true&amp;characterEncoding=GBK" />
 		<!--MySQL数据库的用户名 -->
 		<property name="user" value="root" />

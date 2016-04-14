@@ -44,6 +44,17 @@
 		<artifactId>servlet-api</artifactId>
 		<scope>provided</scope>
 	</dependency>
+	<dependency>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjweaver</artifactId>
+		<version>1.7.4</version>
+	</dependency>
+	<dependency>
+		<groupId>com.mchange</groupId>
+		<artifactId>c3p0</artifactId>
+		<version>0.9.5.2</version>
+	</dependency>
+
   </dependencies>
   <build>
   	<plugins>

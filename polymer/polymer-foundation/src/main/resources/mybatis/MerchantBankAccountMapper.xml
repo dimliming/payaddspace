@@ -11,7 +11,7 @@
 		<result property="settleCode" column="settle_code" />
 		<result property="pcFlag" column="pc_flag" />
 		<result property="isDefault" column="is_default" />
-		<result property="usage" column="usage" />
+		<result property="purpose" column="purpose" />
 		<result property="createUserId" column="create_user_id" />
 		<result property="updateUserId" column="update_user_id" />
 		<result property="createTime" column="create_time" />

@@ -81,7 +81,8 @@ public class HttpClient {
 
         String e;
         try {
-            if(200 == connection.getResponseCode()) {
+        	int respCode =  connection.getResponseCode();
+            if(200 ==respCode) {
                 in = connection.getInputStream();
                 sb.append(new String(read(in), encoding));
             } else {

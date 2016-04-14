@@ -29,7 +29,7 @@ public class MerchantBankAccount {
 	// 是否默认账户
 	private char isDefault;// N-否，Y-是
 	// 用途
-	private String usage;
+	private String purpose;
 	// 建立用户ID
 	private String createUserId;
 	// 最后更新用户ID
@@ -111,12 +111,14 @@ public class MerchantBankAccount {
 		this.isDefault = isDefault;
 	}
 
-	public String getUsage() {
-		return usage;
+
+
+	public String getPurpose() {
+		return purpose;
 	}
 
-	public void setUsage(String usage) {
-		this.usage = usage;
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
 	}
 
 	public String getCreateUserId() {

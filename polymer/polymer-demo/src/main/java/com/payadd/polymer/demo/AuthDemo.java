@@ -49,9 +49,10 @@ public class AuthDemo {
 		contentData.put("cert_no", certifId);
 		contentData.put("custom_name", username);
 		contentData.put("phone", phone);
+		contentData.put("is_test", "Y");
 		String sign = signData(contentData);
 		contentData.put("signature", sign);
-		HttpClient client = new HttpClient("https://139.196.192.53:8443/authen/auth.htm", 6000, 60000);
+		HttpClient client = new HttpClient("http://localhost:8080/gateway/auth/docking", 6000, 60000);
 		client.send(contentData, "utf-8");
 		String respons = client.getResult();
 		String str = URLDecoder.decode(respons, "utf-8");

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import com.payadd.framework.common.extension.ExtensionDescription;
+import com.payadd.framework.common.extension.Router;
 import com.payadd.framework.ddl.DatabaseFacade;
 import com.payadd.polymer.auth.layer.AuthAgency;
 import com.payadd.polymer.auth.layer.AuthDocking;
@@ -16,6 +17,7 @@ public class ShengDaAgency implements AuthAgency {
 	private static final String CONFIG_LOCATION = "docking-config/shengda-agency.properties";
 	private static AuthDockingConfig config;
 
+	@Router("authDockingRouter")
 	private AuthDocking docking;
 
 	private static void loadConfig() {

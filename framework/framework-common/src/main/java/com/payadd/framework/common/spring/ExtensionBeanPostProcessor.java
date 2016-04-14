@@ -19,6 +19,8 @@ public class ExtensionBeanPostProcessor implements BeanPostProcessor {
 
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+		System.out.println("init bean "+beanName);
+		
 		Field[] fields = bean.getClass().getDeclaredFields();
 		for (int i=0;i<fields.length;i++){
 			Field field = fields[i];
