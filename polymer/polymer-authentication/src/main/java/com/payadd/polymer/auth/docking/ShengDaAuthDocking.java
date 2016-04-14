@@ -82,6 +82,7 @@ public class ShengDaAuthDocking implements AuthDocking {
 			return result;
 		}
 		// 8.根据返回的结果，更新channel_trade_no、channel_code、resp_code、resp_msg到trade
+<<<<<<< Updated upstream
 		trade.setChannelTradeNo(responsMap.get("queryId"));
 		trade.setRespCode(respCodeTranslate(responsMap.get("respCode")));
 		trade.setRespMsg(responsMap.get("respMsg"));
@@ -97,6 +98,26 @@ public class ShengDaAuthDocking implements AuthDocking {
 		channelMessage.setTradeNo(trade.getTradeNo());
 		facade.insert(channelMessage);
 		
+=======
+		// TODO:channel_code
+		
+		trade.setChannelTradeNo(responsMap.get("orderId"));
+		trade.setRespCode(responsMap.get("respCode"));
+		trade.setRespMsg("respMsg");
+		facade.update(trade);
+		// 5.记录ChannelMessage日志信息
+		ChannelMessage channelMessage = new ChannelMessage();
+		channelMessage.setChannelCode("shengda");
+		channelMessage.setMerchantCode(trade.getMerchantCode());
+		channelMessage.setTradeNo(trade.getTradeNo());
+		channelMessage.setMsgType(1);
+		channelMessage.setRespMsg(trade.getRespMsg());
+		facade.insert(channelMessage);
+		// TODO:记录ChannelMessage日志信息
+		// 6.获取认证结果
+		
+		// TODO:获取认证结果
+>>>>>>> Stashed changes
 		// 7.将结果封装到Result，返回
 		result.setResultCode(trade.getRespCode());
 		return result;
@@ -146,6 +167,7 @@ public class ShengDaAuthDocking implements AuthDocking {
 			return result;
 		}
 		// 5.记录ChannelMessage日志信息
+<<<<<<< Updated upstream
 		ChannelMessage channelMessage = new ChannelMessage();
 		channelMessage.setId(IdGenerator.nextLongSequence(ChannelMessage.class));
 		channelMessage.setChannelCode("shengda");
@@ -156,41 +178,154 @@ public class ShengDaAuthDocking implements AuthDocking {
 		channelMessage.setTradeNo(trade.getTradeNo());
 		facade.insert(channelMessage);
 
+=======
+		// TODO:记录ChannelMessage日志信息
+		ChannelMessage channelMessage = new ChannelMessage();
+		channelMessage.setChannelCode("shengda");
+		channelMessage.setMerchantCode(trade.getMerchantCode());
+		channelMessage.setTradeNo(trade.getTradeNo());
+		channelMessage.setMsgType(1);
+		channelMessage.setRespMsg(trade.getRespMsg());
+		facade.insert(channelMessage);
+		// 6.获取认证结果
+		// TODO:获取认证结果
+>>>>>>> Stashed changes
 		// 7.将结果封装到Result，返回
 		result.setResultCode(respCodeTranslate(trade.getRespCode()));
 		return result;
 	}
-	
-    private String getRequestParamString(Map<String, String> requestParam, String coder) {
-        if(null == coder || "".equals(coder)) {
-            coder = "UTF-8";
-        }
 
-        StringBuffer sf = new StringBuffer("");
-        String reqstr = "";
-        if(null != requestParam && 0 != requestParam.size()) {
-            Iterator i$ = requestParam.entrySet().iterator();
+	private String getRequestParamString(Map<String, String> requestParam, String coder) {
+		if (null == coder || "".equals(coder)) {
+			coder = "UTF-8";
+		}
 
-            while(i$.hasNext()) {
-                Entry en = (Entry)i$.next();
+		StringBuffer sf = new StringBuffer("");
+		String reqstr = "";
+		if (null != requestParam && 0 != requestParam.size()) {
+			Iterator i$ = requestParam.entrySet().iterator();
 
-                try {
-                    sf.append((String)en.getKey() + "=" + (null != en.getValue() && !"".equals(en.getValue())?URLEncoder.encode((String)en.getValue(), coder):"") + "&");
-                } catch (UnsupportedEncodingException var8) {
-                    var8.printStackTrace();
-                    return "";
-                }
-            }
+			while (i$.hasNext()) {
+				Entry en = (Entry) i$.next();
 
-            reqstr = sf.substring(0, sf.length() - 1);
-        }
-        System.out.println("请求报文:[" + reqstr + "]");
-        return reqstr;
-    }
-    
-    private String respCodeTranslate(String channelRespCode){
-    	//TODO:将渠道的返回码转换为系统的返回码
-    	return null;
-    }
+				try {
+					sf.append((String) en.getKey() + "=" + (null != en.getValue() && !"".equals(en.getValue())
+							? URLEncoder.encode((String) en.getValue(), coder) : "") + "&");
+				} catch (UnsupportedEncodingException var8) {
+					var8.printStackTrace();
+					return "";
+				}
+			}
+
+			reqstr = sf.substring(0, sf.length() - 1);
+		}
+		System.out.println("请求报文:[" + reqstr + "]");
+		return reqstr;
+	}
+
+	private String respCodeTranslate(String channelRespCode) {
+		// TODO:将渠道的返回码转换为系统的返回码
+		String respCode = null;
+		switch (channelRespCode) {
+		case "00":
+			respCode = SystemRespCode.SUCCESS;
+			break;
+		case "E1":
+			respCode = SystemRespCode.MESSAGE_NULL;
+			break;
+		case "E2":
+			respCode = SystemRespCode.SYSTEM_EXCEPTION;
+			break;
+		case "E3":
+			respCode = SystemRespCode.SIGNATURE_ERR;
+			break;
+		case "F2":
+			respCode = SystemRespCode.MESSAGE_ERR;
+			break;
+		case "E4":
+			respCode = SystemRespCode.MERCHANT_ERR;
+			break;
+		case "E5":
+			respCode = SystemRespCode.BALANCE_NO_ENOUGH;
+			break;
+		case "E6":
+			respCode = SystemRespCode.CARD_BIN_ERR;
+			break;
+		case "E7":
+			respCode = SystemRespCode.MERCHANT_CONFIG_NULL;
+			break;
+		case "E8":
+			respCode = SystemRespCode.CHANNAL_ERR;
+			break;
+		case "E9":
+			respCode = SystemRespCode.MERCHANT_TRADE_NO_REPEAT;
+			break;
+		case "F1":
+			respCode = SystemRespCode.MERCHANT_TRADE_NULL;
+			break;
+		case "01":
+			respCode = SystemRespCode.CALL_BANK;
+			break;
+		case "04":
+			respCode = SystemRespCode.CONFISCATE_CARD;
+			break;
+		case "05":
+			respCode = SystemRespCode.MASTER_AUTH_FAIL;
+			break;
+		case "12":
+			respCode = SystemRespCode.TRADE_INVALID;
+			break;
+		case "14":
+			respCode = SystemRespCode.CARD_INVALID;
+			break;
+		case "21":
+			respCode = SystemRespCode.CARD_SLEEP;
+			break;
+		case "34":
+			respCode = SystemRespCode.CARD_CHEAT;
+			break;
+		case "40":
+			respCode = SystemRespCode.TRADE_TYPE_NONSUPP;
+			break;
+		case "41":
+			respCode = SystemRespCode.CARD_LOSS;
+			break;
+		case "51":
+			respCode = SystemRespCode.CAPITAL_NO_ENOUGH;
+			break;
+		case "54":
+			respCode = SystemRespCode.CARD_PAST_DUE;
+			break;
+		case "55":
+			respCode = SystemRespCode.PASSWORD_ERR;
+			break;
+		case "57":
+			respCode = SystemRespCode.CARD_TRADE_NO_ALLOW;
+			break;
+		case "61":
+			respCode = SystemRespCode.TRADE_MONEY_EXCEED;
+			break;
+		case "62":
+			respCode = SystemRespCode.CARD_LIMIT;
+			break;
+		case "75":
+			respCode = SystemRespCode.PASSWORD_ERR_EXCEED;
+			break;
+		case "91":
+			respCode = SystemRespCode.BANK_ERR;
+			break;
+		case "98":
+			respCode = SystemRespCode.BANK_OVERTIME;
+			break;
+		case "ER":
+			respCode = SystemRespCode.OPERATE_EXCEPTION;
+			break;
+
+		default:
+			respCode = SystemRespCode.FIELD_FORMAT_ERR;
+			break;
+		}
+		return respCode;
+	}
 
 }

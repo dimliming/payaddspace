@@ -3,7 +3,6 @@ package com.payadd.polymer.auth.product;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.payadd.framework.common.extension.ExtensionDescription;
@@ -11,7 +10,6 @@ import com.payadd.framework.common.toolkit.IdGenerator;
 import com.payadd.framework.ddl.DatabaseFacade;
 import com.payadd.framework.ddl.query.SimpleQuery;
 import com.payadd.polymer.auth.constant.IsWriteOff;
-import com.payadd.polymer.auth.constant.MessageFields;
 import com.payadd.polymer.auth.constant.NotifyStatus;
 import com.payadd.polymer.auth.constant.SystemRespCode;
 import com.payadd.polymer.auth.constant.TradeStatus;
