@@ -55,7 +55,8 @@ public class ExtensionManager<T> {
 	private void resolve(){
 		Iterator<T> it = loader.iterator();
 		while(it.hasNext()){
-			Class<T> extClass = (Class<T>)it.next();
+			T ext = it.next();
+			Class<T> extClass = (Class<T>)ext.getClass();
 			resolveExtType(extClass);
 		}
 		
@@ -85,6 +86,7 @@ public class ExtensionManager<T> {
 		//resolve extension purpose
 		Extension<T> extension = new Extension<T>(extClass);
 		extension.setName(desc.name());
+		extension.setCode(code);
 		this.extensionMap.put(code, extension);
 		
 	}
@@ -124,12 +126,15 @@ public class ExtensionManager<T> {
 			findExtensionRouterTypes();
 		}
 		
-		Iterator<String> routerCodeIt = extensionRouterTypes.keySet().iterator();
-		while (routerCodeIt.hasNext()){
-			String routerCode = routerCodeIt.next();
-			Class<?> routerType = extensionRouterTypes.get(routerCode);
-			Class<T> adaptorType = AdaptorTypeGenerator.generator(type, routerType);
-			adaptorTypes.put(routerCode, adaptorType);//通过router动态生成的适配者，以router的code作为code
+		if (extensionRouterTypes!=null){
+			Iterator<String> routerCodeIt = extensionRouterTypes.keySet().iterator();
+			
+			while (routerCodeIt.hasNext()){
+				String routerCode = routerCodeIt.next();
+				Class<?> routerType = extensionRouterTypes.get(routerCode);
+				Class<T> adaptorType = AdaptorTypeGenerator.generator(type, routerType);
+				adaptorTypes.put(routerCode, adaptorType);//通过router动态生成的适配者，以router的code作为code
+			}
 		}
 	}
 	
@@ -230,7 +235,13 @@ public class ExtensionManager<T> {
 		Field[] fields = type.getDeclaredFields();
 		for (int i=0;i<fields.length;i++){
 			Field field = fields[i];
-			Class<?>[] implInterfaces = field.getType().getInterfaces();
+			Class<?>[] implInterfaces = null;
+			Class<?> fieldType = field.getType();
+			if (fieldType.isInterface()){
+				implInterfaces = new Class<?>[]{field.getType()};
+			}else{
+				implInterfaces = field.getType().getInterfaces();
+			}
 			if (implInterfaces.length==0)continue;//不是扩展点的例子，无需实例化
 			
 			Concrete concrete = field.getAnnotation(Concrete.class);
@@ -246,6 +257,7 @@ public class ExtensionManager<T> {
 						fieldInstance = ExtensionManager.getInstance(implInt).getExtension();
 					}
 					try {
+						field.setAccessible(true);
 						field.set(instance, fieldInstance);
 					} catch (IllegalArgumentException e) {
 						e.printStackTrace();
@@ -269,6 +281,7 @@ public class ExtensionManager<T> {
 		Iterator<Class<?>> it = list.iterator();
 		while (it.hasNext()){
 			Class<?> point = it.next();
+			System.out.println("Find extension point:"+point.getName());
 			EXTENSION_POINT.put(point, point);
 		}
 	}
@@ -288,6 +301,7 @@ public class ExtensionManager<T> {
 			String code = route.code();
 			Map<String,Class<?>> extenionRouterMap = ROUTER_TYPE.get(extensionPoint);
 			if (extenionRouterMap==null){
+				extenionRouterMap = new HashMap<String, Class<?>>();
 				ROUTER_TYPE.put(extensionPoint, extenionRouterMap);
 			}
 			if (extenionRouterMap.containsKey(code)){//存在同名的router，抛异常
@@ -300,6 +314,9 @@ public class ExtensionManager<T> {
 	
 	private void findExtensionRouterTypes(){
 		//查找所有属于本extension的router type,查找方法为查找所有类的Route注解，如果其target为本extension point，那么即为本extension的router
+		if (ROUTER_TYPE==null){
+			findAllRouterTypes();
+		}
 		extensionRouterTypes = (Map<String,Class<?>>)ROUTER_TYPE.get(this.type);
 		
 	}

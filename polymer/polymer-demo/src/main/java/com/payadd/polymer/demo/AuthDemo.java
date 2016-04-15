@@ -37,7 +37,9 @@ public class AuthDemo {
 		contentData.put("merId", merid);
 		contentData.put("merchant_code", "310012301000011");
 		contentData.put("order_no", "310012301000011");
-		contentData.put("trade_time", new SimpleDateFormat("yyyyMMddhhmmss").format(new Date()));
+		//contentData.put("trade_time", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+		contentData.put("trade_time", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+		
 		// defaultPayType 位图形式
 		// 第一位数字是1代表卡号，第二为数字1代表验证身份证，第三位为数字1代表验证姓名，第四位为数字１代表验证手机
 		contentData.put("auth_type", "1111");

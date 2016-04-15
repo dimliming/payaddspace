@@ -13,11 +13,11 @@
 	
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/polymer?useUnicode=true&amp;characterEncoding=GBK" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/polymer?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false" />
 		<!--MySQL数据库的用户名 -->
 		<property name="user" value="root" />
 		<!--MySQL数据库 密码 -->
-		<property name="password" value="root" />
+		<property name="password" value="" />
 		<!--连接池中保留的最小连接数。 -->
 		<property name="minPoolSize" value="5" />
 		<!--连接池中保留的最大连接数。Default: 15 -->

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.payadd.framework.common.extension.ExtensionDescription;
+import com.payadd.framework.common.extension.Multiple;
 import com.payadd.framework.common.toolkit.IdGenerator;
 import com.payadd.framework.ddl.DatabaseFacade;
 import com.payadd.framework.ddl.query.SimpleQuery;
@@ -49,7 +50,7 @@ public class CommonAuthProtocol implements AuthProtocol {
 
 		// 定义必需字段
 
-		ArrayList<String> list = (ArrayList<String>) Arrays.asList(MessageFields.AUTH_FIELDS);
+		List<String> list =  Arrays.asList(MessageFields.AUTH_FIELDS);
 		AuthResult result = validate(list, msg);
 
 		// 1.所有报文字段校验，如果通不过，组装错误信息到Result，返回
@@ -120,7 +121,7 @@ public class CommonAuthProtocol implements AuthProtocol {
 	public AuthResult enquiry(DatabaseFacade facade, RawMessage msg) {
 		MerchantMessage merchantMessage = new MerchantMessage();
 		// 1.所有报文字段校验，如果通不过，组装错误信息到Result，返回
-		ArrayList<String> list = (ArrayList<String>) Arrays.asList(MessageFields.ENQUIRY_FIELDS);
+		List<String> list =  Arrays.asList(MessageFields.ENQUIRY_FIELDS);
 		// 1)准备好Result
 		AuthResult result = validate(list, msg);
 		if (result.getResultCode() != null) {
@@ -219,20 +220,15 @@ public class CommonAuthProtocol implements AuthProtocol {
 				}
 				break;
 			case MessageFields.MERCHANT_CODE:
-				if (!ValidatorUtil.isInlength(value, 32)) {
+				if (!ValidatorUtil.isInlength(value, 1,32)) {
 					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
-				if (!(ValidatorUtil.hasLetter(value)
-						&& (ValidatorUtil.hasSlash(value) || ValidatorUtil.hasDigit(value)))) {
+				/*if (ValidatorUtil.hasLetter(value)|| ValidatorUtil.hasSlash(value)) {
 					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
-				}
+				}*/
 				break;
 			case MessageFields.ORDER_NO:
 				if (!ValidatorUtil.isInlength(value, 6, 40)) {
-					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
-				}
-				if (!(ValidatorUtil.hasLetter(value)
-						&& (ValidatorUtil.hasSlash(value) || ValidatorUtil.hasDigit(value)))) {
 					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
@@ -243,7 +239,7 @@ public class CommonAuthProtocol implements AuthProtocol {
 				break;
 			case MessageFields.AUTH_TYPE:
 				String[] authTypes = { "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111" };
-				ArrayList<String> authTypeList = (ArrayList<String>) Arrays.asList(authTypes);
+				List<String> authTypeList =  Arrays.asList(authTypes);
 
 				if (!authTypeList.contains(value)) {
 					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
@@ -280,14 +276,13 @@ public class CommonAuthProtocol implements AuthProtocol {
 				if (!ValidatorUtil.isInlength(value, 1, 60)) {
 					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
-				if (!(ValidatorUtil.hasLetter(value)
-						&& (ValidatorUtil.hasSlash(value) || ValidatorUtil.hasDigit(value)))) {
+				if (ValidatorUtil.hasLetter(value)) {
 					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
 				break;
 			case MessageFields.CERT_TYPE:
 				String[] certTypes = { "01", "02", "03", "04", "05", "06", "07", "99" };
-				ArrayList<String> certTypeList = (ArrayList<String>) Arrays.asList(certTypes);
+				List<String> certTypeList =  Arrays.asList(certTypes);
 				if (!certTypeList.contains(value)) {
 					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
@@ -313,9 +308,6 @@ public class CommonAuthProtocol implements AuthProtocol {
 
 			}
 
-			if (fieldList.contains(key)) {
-				fieldList.remove(key);
-			}
 			if (result.getResultCode() != null) {
 				result.setResultDesc(AuthResultHelper.getDesc(result.getResultCode()));
 				if (SystemRespCode.FIELD_FORMAT_ERR.equals(result.getResultCode())) {
@@ -329,14 +321,16 @@ public class CommonAuthProtocol implements AuthProtocol {
 				return result;
 			}
 		}
-		if (!fieldList.isEmpty()) {
-			result.setResultCode(SystemRespCode.MESSAGE_ERR);
-			result.setReturnMsg("resp_code=" + result.getResultCode() + "&resp_msg=" + result.getResultDesc());
-		}
 
 		return result;
 	}
 
 	public static void main(String[] args) {
+		Multiple m = AuthProtocol.class.getAnnotation(Multiple.class);
+		if (m!=null){
+			System.out.println("have annonation");
+		}else{
+			System.out.println("didn't have annonation");
+		}
 	}
 }

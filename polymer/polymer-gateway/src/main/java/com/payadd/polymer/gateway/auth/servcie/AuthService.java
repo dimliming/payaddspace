@@ -1,5 +1,7 @@
 package com.payadd.polymer.gateway.auth.servcie;
 
+import java.lang.reflect.Field;
+
 import org.springframework.stereotype.Service;
 
 import com.payadd.polymer.auth.layer.AuthProtocol;
@@ -19,5 +21,14 @@ public class AuthService extends BaseService{
 	public String enquiry(RawMessage msg){
 		AuthResult result = protocol.enquiry(facade, msg);
 		return result.getReturnMsg();
+	}
+	
+	public static void main(String[] args){
+		Field[] fields = AuthService.class.getDeclaredFields();
+		for (int i=0;i<fields.length;i++){
+			Field field = fields[i];
+			Class<?>[] implInterfaces = field.getType().getInterfaces();
+			System.out.println(implInterfaces[0].getName());
+		}
 	}
 }

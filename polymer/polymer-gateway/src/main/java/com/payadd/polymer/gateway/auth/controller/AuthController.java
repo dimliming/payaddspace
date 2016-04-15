@@ -59,7 +59,7 @@ public class AuthController {
 		}
 		
 		try {
-			response.setHeader("Content-Type", "text/html");
+			response.setHeader("Content-Type", "text/html;charset=utf-8");
 			response.getWriter().write(result);
 		} catch (IOException e) {
 			e.printStackTrace();

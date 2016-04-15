@@ -4,8 +4,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
 import com.payadd.framework.common.exception.SystemException;
 
 import javassist.CannotCompileException;
@@ -15,6 +13,7 @@ import javassist.CtConstructor;
 import javassist.CtField;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
+import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 
 public class AdaptorTypeGenerator {
@@ -24,16 +23,18 @@ public class AdaptorTypeGenerator {
 		String adaptorTypeName = adapteeTypeName+"__"+routerTypeName;
 		
 		ClassPool pool = new ClassPool(true);
+		pool.insertClassPath(new LoaderClassPath(Thread.currentThread().getContextClassLoader()));
+		
 		CtClass adaptorType = null;
 		try {
 			CtClass superClass = pool.get(Object.class.getName());
 			adaptorType = pool.makeClass(adaptorTypeName, superClass);
-			adaptorType.addInterface(adaptorType);
+			adaptorType.addInterface(pool.get(adapteeType.getName()));
 			
 			//创建一个router属性
 			adaptorType.addField(CtField.make("private "+routerType.getName()+" router = new "+routerType.getName()+"();", adaptorType));
 			//创建一个map属性，用来保存本扩展点的所有实现子类
-			adaptorType.addField(CtField.make("private Map extensionMap;", adaptorType));
+			adaptorType.addField(CtField.make("private java.util.Map extensionMap;", adaptorType));
 			
 			//创建一个带有Map参数的构造函数
 			CtClass mapClass = pool.get(Map.class.getName());
@@ -41,7 +42,7 @@ public class AdaptorTypeGenerator {
 			constructor.setModifiers(Modifier.PUBLIC);
 			StringBuffer constructorBody = new StringBuffer();
 			constructorBody.append("{");
-			constructorBody.append("this.extensionMap = $1");
+			constructorBody.append("this.extensionMap = $1;");
 			constructorBody.append("}");
 			constructor.setBody(constructorBody.toString());
 			adaptorType.addConstructor(constructor);
@@ -106,7 +107,7 @@ public class AdaptorTypeGenerator {
 				adaptorType.addMethod(ctMethod);
 				
 			}
-			
+			System.out.println(adaptorType.toString());
 			Class<T> newClass = (Class<T>)adaptorType.toClass();
 			return newClass;
 		} catch (NotFoundException e) {

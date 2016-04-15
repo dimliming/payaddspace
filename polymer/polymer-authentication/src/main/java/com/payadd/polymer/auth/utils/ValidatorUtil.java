@@ -54,7 +54,7 @@ public class ValidatorUtil {
 
 	public static boolean isValidDate(String str) {
 		boolean convertSuccess = true;
-		SimpleDateFormat format = new SimpleDateFormat("YYYYMMDDhhmmss");
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
 		try {
 			format.setLenient(false);
 			format.parse(str);

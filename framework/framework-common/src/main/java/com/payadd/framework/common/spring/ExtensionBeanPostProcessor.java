@@ -24,13 +24,22 @@ public class ExtensionBeanPostProcessor implements BeanPostProcessor {
 		Field[] fields = bean.getClass().getDeclaredFields();
 		for (int i=0;i<fields.length;i++){
 			Field field = fields[i];
-			Class<?>[] implInterfaces = field.getType().getInterfaces();
+			//Class<?>[] implInterfaces = field.getType().getInterfaces();
+			Class<?>[] implInterfaces = null;
+			Class<?> fieldType = field.getType();
+			if (fieldType.isInterface()){
+				implInterfaces = new Class<?>[]{field.getType()};
+			}else{
+				implInterfaces = field.getType().getInterfaces();
+			}
 			if (implInterfaces.length==0)continue;//不是扩展点的例子，无需实例化
 			
 			Concrete concrete = field.getAnnotation(Concrete.class);
 			Router router = field.getAnnotation(Router.class);
 			for (Class<?> implInt:implInterfaces){
+				System.out.println("deal interface :"+implInt.getName());
 				if (ExtensionManager.isExtensionPoint(implInt)){
+					System.out.println(beanName+" has extension point field:"+implInt.getName());
 					Object fieldInstance = null;
 					if (concrete!=null){
 						fieldInstance = ExtensionManager.getInstance(implInt).getExtension(concrete.value());
@@ -40,6 +49,7 @@ public class ExtensionBeanPostProcessor implements BeanPostProcessor {
 						fieldInstance = ExtensionManager.getInstance(implInt).getExtension();
 					}
 					try {
+						field.setAccessible(true);
 						field.set(bean, fieldInstance);
 					} catch (IllegalArgumentException e) {
 						e.printStackTrace();
@@ -55,5 +65,6 @@ public class ExtensionBeanPostProcessor implements BeanPostProcessor {
 		}
 		return bean;
 	}
+	
 
 }

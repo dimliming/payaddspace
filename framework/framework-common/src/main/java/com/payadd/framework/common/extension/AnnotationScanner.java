@@ -137,11 +137,11 @@ public class AnnotationScanner {
 		}
 	}
 	
-	public static <T extends Annotation> List<Class<?>> scan(Class<T> annotationClass){
+	public static <A extends Annotation>  List<Class<?>> scan(Class<A> annotationClass){
 		List<Class<?>> list = getClasses(PACKAGE_NAME);
 		List<Class<?>> resultList = new ArrayList<Class<?>>();
 		for (Class<?> clazz : list) {
-			T controller = clazz.getAnnotation(annotationClass);  
+			A controller = clazz.getAnnotation(annotationClass);  
             if (controller != null) {
             	resultList.add(clazz);
             }
