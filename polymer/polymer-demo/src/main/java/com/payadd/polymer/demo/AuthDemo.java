@@ -18,9 +18,9 @@ import com.google.common.base.Strings;
  */
 public class AuthDemo {
 	// 每个商户分配md5盐值
-	static String signKey = "fd54febfc1dc1d5e10f5780b6ae6333c";
+	static String signKey = "111111";
 	// 分配商户号
-	static String merid = "310012301000011";
+	static String merid = "80075501010001";
 
 	static String pan = "6227003321740369152";
 	static String certifId = "440902199307090413";
@@ -34,10 +34,8 @@ public class AuthDemo {
 		contentData.put("encoding", "UTF-8");
 		// 00 认证
 		contentData.put("txn_type", "00");
-		contentData.put("merId", merid);
-		contentData.put("merchant_code", "310012301000011");
-		contentData.put("order_no", "310012301000011");
-		//contentData.put("trade_time", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+		contentData.put("merchant_code", merid);
+		contentData.put("order_no", "DD"+new SimpleDateFormat("yyMMddHHmmss").format(new Date()));
 		contentData.put("trade_time", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
 		
 		// defaultPayType 位图形式

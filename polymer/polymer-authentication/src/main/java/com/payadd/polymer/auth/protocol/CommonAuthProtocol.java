@@ -1,6 +1,8 @@
 package com.payadd.polymer.auth.protocol;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -95,14 +97,19 @@ public class CommonAuthProtocol implements AuthProtocol {
 		Trade trade = new Trade();
 
 		trade.setMerchantCode(merchantCode);
-		trade.setMerchantTradeNO(map.get(MessageFields.ORDER_NO));
+		trade.setMerchantTradeNo(map.get(MessageFields.ORDER_NO));
 		trade.setAuthType(map.get(MessageFields.AUTH_TYPE));
 		trade.setCertNo(map.get(MessageFields.CERT_NO));
 		trade.setCertType(map.get(MessageFields.CERT_TYPE));
 		trade.setAccountNo(map.get(MessageFields.ACCOUNT_NO));
 		trade.setCustomName(map.get(MessageFields.CUSTOM_NAME));
 		trade.setPhone(map.get(MessageFields.PHONE));
-		trade.setTradeTime(Timestamp.valueOf(map.get(MessageFields.TRADE_TIME)));
+		String tradeTime = map.get(MessageFields.TRADE_TIME);
+		try {
+			trade.setTradeTime(new Timestamp( new SimpleDateFormat("yyyyMMddHHmmss").parse(tradeTime).getTime()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		trade.setIsTest(map.get("is_test"));
 
 		AuthResult productAuthResult = product.auth(facade, trade);

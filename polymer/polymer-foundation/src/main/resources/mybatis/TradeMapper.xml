@@ -5,7 +5,7 @@
 		<id property="tradeNo" column="trade_no" />
 		<result property="merchantCode" column="merchant_code" />
 		<result property="fullName" column="full_name" />
-		<result property="merchantTradeNO" column="merchant_trade_no" />
+		<result property="merchantTradeNo" column="merchant_trade_no" />
 		<result property="channelTradeNo" column="channel_trade_no" />
 		<result property="agencyCode" column="agency_code" />
 		<result property="productCode" column="product_code" />

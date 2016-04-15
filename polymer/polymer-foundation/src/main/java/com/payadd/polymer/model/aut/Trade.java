@@ -18,7 +18,7 @@ public class Trade {
 	//商户名称
 	private String fullName;
 	//商户交易号
-	private String merchantTradeNO;
+	private String merchantTradeNo;
 	//渠道交易号
 	private String channelTradeNo;//视渠道返回情况，可为空
 	
@@ -80,11 +80,12 @@ public class Trade {
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
-	public String getMerchantTradeNO() {
-		return merchantTradeNO;
+
+	public String getMerchantTradeNo() {
+		return merchantTradeNo;
 	}
-	public void setMerchantTradeNO(String merchantTradeNO) {
-		this.merchantTradeNO = merchantTradeNO;
+	public void setMerchantTradeNo(String merchantTradeNo) {
+		this.merchantTradeNo = merchantTradeNo;
 	}
 	public String getChannelTradeNo() {
 		return channelTradeNo;

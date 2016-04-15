@@ -30,7 +30,7 @@ public class CommonAuthProduct implements AuthProduct {
 		// 1.检查是否有重复的商户订单号，如果有，封装错误信息返回
 		AuthResult result = new AuthResult();
 		SimpleQuery sq = new SimpleQuery(facade, Trade.class);
-		sq.eq("merchantTradeNo", trade.getMerchantTradeNO());
+		sq.eq("merchantTradeNo", trade.getMerchantTradeNo());
 		sq.eq("merchantCode", trade.getMerchantCode());
 		if (sq.uniqueResult() != null) {
 			result.setResultCode(SystemRespCode.MERCHANT_TRADE_NO_REPEAT);
