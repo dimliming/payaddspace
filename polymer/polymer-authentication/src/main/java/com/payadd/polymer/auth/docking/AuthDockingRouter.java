@@ -10,7 +10,7 @@ import com.payadd.polymer.model.aut.Trade;
 public class AuthDockingRouter  {
 
 	public String auth(DatabaseFacade facade, Trade trade, AuthDockingConfig config) {
-		if (trade.getIsTest()!=null&&"".equals(trade.getIsTest())){
+		if (trade.getIsTest()!=null&&"Y".equals(trade.getIsTest())){
 			return "test";
 		}else{
 			return "shengda";

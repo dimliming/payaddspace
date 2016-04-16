@@ -49,7 +49,7 @@ public class AuthDemo {
 		contentData.put("cert_no", certifId);
 		contentData.put("custom_name", username);
 		contentData.put("phone", phone);
-		contentData.put("is_test", "Y");
+		contentData.put("is_test", "N");
 		String sign = signData(contentData);
 		contentData.put("signature", sign);
 		HttpClient client = new HttpClient("http://localhost:8080/gateway/auth/docking", 6000, 60000);
@@ -57,7 +57,7 @@ public class AuthDemo {
 		String respons = client.getResult();
 		String str = URLDecoder.decode(respons, "utf-8");
 		
-		System.out.println(getMapByRespBody(str));
+		System.out.println(str);
 
 	}
 	  public static Map<String, String> getMapByRespBody(String respons){
