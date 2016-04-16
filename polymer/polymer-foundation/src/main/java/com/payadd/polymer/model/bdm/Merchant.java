@@ -19,9 +19,9 @@ public class Merchant {
 	// 商户简称
 	private String shortName;
 	// 商户状态
-	private char status; // 1-正常，2-禁止，3-销户
+	private String status; // 1-正常，2-禁止，3-销户
 	// 商户名单标志
-	private char listFlag;// 1-正常，2-黑名单，3-灰名单，4-红名单
+	private String listFlag;// 1-正常，2-黑名单，3-灰名单，4-红名单
 	// 商户阶层
 	private String level;// 维护商户等级之用。先默认为‘00’，预留
 	// 网址名称
@@ -61,7 +61,7 @@ public class Merchant {
 	// 联系人职务
 	private String contactPosition;
 	// 联系人性别
-	private char contactSex; // F-女，M-男
+	private String contactSex; // F-女，M-男
 	// 联系人邮箱
 	private String contactEmail;
 	// 联系人手机
@@ -103,21 +103,6 @@ public class Merchant {
 		this.shortName = shortName;
 	}
 
-	public char getStatus() {
-		return status;
-	}
-
-	public void setStatus(char status) {
-		this.status = status;
-	}
-
-	public char getListFlag() {
-		return listFlag;
-	}
-
-	public void setListFlag(char listFlag) {
-		this.listFlag = listFlag;
-	}
 
 	public String getLevel() {
 		return level;
@@ -271,14 +256,6 @@ public class Merchant {
 		this.contactPosition = contactPosition;
 	}
 
-	public char getContactSex() {
-		return contactSex;
-	}
-
-	public void setContactSex(char contactSex) {
-		this.contactSex = contactSex;
-	}
-
 	public String getContactEmail() {
 		return contactEmail;
 	}
@@ -342,5 +319,30 @@ public class Merchant {
 	public void setLastUpdateTime(Timestamp lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getListFlag() {
+		return listFlag;
+	}
+
+	public void setListFlag(String listFlag) {
+		this.listFlag = listFlag;
+	}
+
+	public String getContactSex() {
+		return contactSex;
+	}
+
+	public void setContactSex(String contactSex) {
+		this.contactSex = contactSex;
+	}
+	
 
 }

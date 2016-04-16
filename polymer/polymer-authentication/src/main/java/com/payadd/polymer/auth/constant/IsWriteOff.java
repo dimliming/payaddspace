@@ -1,6 +1,6 @@
 package com.payadd.polymer.auth.constant;
 
 public class IsWriteOff {
-	public static final char YES = 'Y';
-	public static final char NO = 'N';
+	public static final String YES = "Y";
+	public static final String NO = "N";
 }

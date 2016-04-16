@@ -43,7 +43,7 @@ public class Trade {
 	//交易费用
 	private BigDecimal fee;
 	 //是否已核销
-	private char isWriteOff;//Y-是,N-否
+	private String isWriteOff;//Y-是,N-否
 	//渠道应答码
 	private String respCode;
 	//渠道应答消息
@@ -149,13 +149,14 @@ public class Trade {
 	public void setFee(BigDecimal fee) {
 		this.fee = fee;
 	}
-	public char getIsWriteOff() {
+
+
+	public String getIsWriteOff() {
 		return isWriteOff;
 	}
-	public void setIsWriteOff(char isWriteOff) {
+	public void setIsWriteOff(String isWriteOff) {
 		this.isWriteOff = isWriteOff;
 	}
-
 	public String getRespCode() {
 		return respCode;
 	}
