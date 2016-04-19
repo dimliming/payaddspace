@@ -52,30 +52,36 @@
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<context:component-scan base-package="com.payadd">
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
-	</context:component-scan>
-	
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
 	    <property name="dataSource" ref="dataSource"/>  
 	</bean>  
 	  
-	<!-- 定义事务通知 -->  
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">  
-	    <!-- 定义方法的过滤规则 -->  
+	<!-- 定义事务通知 ,用这种方式无法插入事务管理，为什么呢？-->  
+	<!-- tx:advice id="txAdvice" transaction-manager="transactionManager">  
 	    <tx:attributes>  
-	        <!-- 所有方法都使用事务 -->  
 	        <tx:method name="*" propagation="REQUIRED"/>  
-	        <!-- 定义所有get开头的方法都是只读的 -->  
-	        <tx:method name="get*" read-only="true"/>  
 	    </tx:attributes>  
-	</tx:advice>  
+	</tx:advice-->  
+	<bean id="dataSourceTransactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
 
 	<!-- 定义AOP配置 -->
-	<aop:config>
+	<aop:config proxy-target-class="true">
 	    <!-- 定义一个切入点 -->
-	    <aop:pointcut expression="execution (* com.payadd.polymer.gateway.auth.service.*.*(..))" id="services"/>
+	    <aop:pointcut id="services" expression="execution (* com.payadd.polymer.*.*.servcie.*.*(..))"/>
 	    <!-- 对切入点和事务的通知，进行适配 -->
-	    <aop:advisor advice-ref="txAdvice" pointcut-ref="services"/>
+	    <aop:advisor advice-ref="dataSourceTransactionInterceptor" pointcut-ref="services"/>
 	</aop:config>
+	
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	
+	<context:component-scan base-package="com.payadd">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
 </beans>

@@ -71,7 +71,7 @@ public class ListParameterHandler implements ParameterHandler {
 	          if (typeHandler == null) {
 	            throw new ExecutorException("There was no TypeHandler found for parameter " + propertyName + " of statement " + mappedStatement.getId());
 	          }
-	          System.out.println((i+1)+"="+value+":"+parameterMapping.getProperty());
+	          //System.out.println((i+1)+"="+value+":"+parameterMapping.getProperty());
 	          typeHandler.setParameter(ps, i + 1, value, parameterMapping.getJdbcType());
 	        }
 	      }

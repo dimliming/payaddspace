@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import org.springframework.stereotype.Service;
 
+import com.payadd.framework.common.exception.SystemException;
 import com.payadd.polymer.auth.layer.AuthProtocol;
 import com.payadd.polymer.base.BaseService;
 import com.payadd.polymer.model.aut.AuthResult;
@@ -15,6 +16,10 @@ public class AuthService extends BaseService{
 	
 	public String auth(RawMessage msg){
 		AuthResult result = protocol.auth(facade, msg);
+		boolean b = true;
+		if (b){
+			throw new SystemException("1111");
+		}
 		return result.getReturnMsg();
 	}
 	
