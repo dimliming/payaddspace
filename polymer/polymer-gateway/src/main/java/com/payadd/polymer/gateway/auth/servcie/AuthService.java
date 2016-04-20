@@ -1,6 +1,9 @@
 package com.payadd.polymer.gateway.auth.servcie;
 
-import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
@@ -29,11 +32,38 @@ public class AuthService extends BaseService{
 	}
 	
 	public static void main(String[] args){
-		Field[] fields = AuthService.class.getDeclaredFields();
+		/*Field[] fields = AuthService.class.getDeclaredFields();
 		for (int i=0;i<fields.length;i++){
 			Field field = fields[i];
 			Class<?>[] implInterfaces = field.getType().getInterfaces();
 			System.out.println(implInterfaces[0].getName());
+		}*/
+		try {
+			SimpleDateFormat formate = new SimpleDateFormat("yyyyMMdd");
+			Date startDate = formate.parse("20150302");
+			Date endDate = formate.parse("20150302");
+			
+			Date today = new Date(System.currentTimeMillis());
+			
+			int seq = 1;
+			while (endDate.before(today)){
+				Calendar c = Calendar.getInstance();
+				c.setTime(endDate);
+				if (c.get(Calendar.DAY_OF_WEEK)==1){
+					startDate = endDate;
+				}else if (c.get(Calendar.DAY_OF_WEEK)==7){
+					System.out.println(seq+" "+formate.format(startDate)+"--"+formate.format(endDate));
+					seq = seq+1;
+				}
+				c.add(Calendar.DAY_OF_YEAR, 1);
+				endDate = c.getTime();
+				
+			}
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 	}
 }
