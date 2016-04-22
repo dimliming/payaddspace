@@ -15,9 +15,9 @@ import java.util.TreeMap;
 public class AuthQueryDemo {
 
     //每个商户分配md5盐值
-    static String signKey="68f1ba2603894da1b946b2541947b78c";
+    static String signKey="111111";
     //分配商户号
-    static String merid="310012171000001";
+    static String merid="80075501010001";
 
     public static void main(String[] args) throws Exception {
 
@@ -27,14 +27,11 @@ public class AuthQueryDemo {
 
         //01 认证订单查询
         contentData.put("txn_type", "01");
-        contentData.put("merId", merid);
-        //商户原交易订单号
-        contentData.put("merchant_code", "310012171000001");
-        //商户原交易订单时间
-        contentData.put("order_no", "20151217203100");
+        contentData.put("merchant_code", merid);
+        contentData.put("order_no", "DD160420111143");
        String sign= signData(contentData);
         contentData.put("signature",sign);
-      HttpClient client = new HttpClient("http://127.0.0.1:8080/auth.htm",6000,60000);
+      HttpClient client = new HttpClient("http://localhost:8080/gateway/auth/docking",6000,60000);
         client.send(contentData,"utf-8");
        String respons=    client.getResult();
         System.out.println(URLDecoder.decode(respons,"utf-8"));

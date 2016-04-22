@@ -21,7 +21,6 @@ public class SignUtil {
 				submitFromData.put(obj.getKey(), value.trim());
 			}
 		}
-
 		String signData = coverMap2String(submitFromData) + "&signkey=" + signKey;
 		String sign = Md5Utils.md5(signData.getBytes(Charsets.UTF_8));
 		return sign;

@@ -142,10 +142,7 @@ public class CommonAuthProtocol implements AuthProtocol {
 		// TODO:
 		Map<String, String> map = msg.getFieldMap();
 		String signature = map.remove(MessageFields.SIGNATURE);
-		String merchantCode = map.get(MessageFields.MERCHANT_CODE);
-		String merchantTradeNo = map.get(MessageFields.ORDER_NO);
-		List<String> querylist = new ArrayList<String>();
-		querylist.add(merchantCode);
+		
 
 		SimpleQuery sq = new SimpleQuery(facade, MerchantSecurity.class);
 		sq.eq("merchantCode", map.get(MessageFields.MERCHANT_CODE));
@@ -160,6 +157,7 @@ public class CommonAuthProtocol implements AuthProtocol {
 
 			return result;
 		}
+		
 		String signData = SignUtil.signData(map, mercSec.getSignKey());
 		if (!signature.equals(signData)) {
 			result.setResultCode(SystemRespCode.SIGNATURE_ERR);
@@ -172,14 +170,14 @@ public class CommonAuthProtocol implements AuthProtocol {
 		}
 		// 3.组装MerchantMessage，报文类型设置为2，并保存到数据库中(需要保存后就直接commit)
 		// id
-		merchantMessage.setMerchantTradeNo(merchantTradeNo);
+		merchantMessage.setMerchantTradeNo(map.get(MessageFields.ORDER_NO));
 		merchantMessage.setMsgType(MessageType.ENQUIRY);
-		merchantMessage.setMerchantCode(merchantCode);
+		merchantMessage.setMerchantCode(map.get(MessageFields.MERCHANT_CODE));
 		String reqMsg = SignUtil.coverMap2String(map);
 		merchantMessage.setReqMsg(reqMsg);
 		facade.insert(merchantMessage);
 		// 4.调用product.enquiry
-		result = product.enquiry(facade, merchantCode, merchantTradeNo);
+		result = product.enquiry(facade, map.get(MessageFields.MERCHANT_CODE), map.get(MessageFields.ORDER_NO));
 		// 5.根据返回的结果，组装反馈报文，放到Result中，
 		result.setResultDesc(AuthResultHelper.getDesc(result.getResultCode()));
 		result.setReturnMsg("resp_code=" + result.getResultCode() + "&resp_msg=" + result.getResultDesc());

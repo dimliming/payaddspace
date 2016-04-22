@@ -19,10 +19,7 @@ public class AuthService extends BaseService{
 	
 	public String auth(RawMessage msg){
 		AuthResult result = protocol.auth(facade, msg);
-		boolean b = true;
-		if (b){
-			throw new SystemException("1111");
-		}
+		
 		return result.getReturnMsg();
 	}
 	

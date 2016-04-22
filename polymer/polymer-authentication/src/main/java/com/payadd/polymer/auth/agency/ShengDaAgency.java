@@ -57,6 +57,8 @@ public class ShengDaAgency implements AuthAgency {
 	public AuthResult enquiry(DatabaseFacade facade, Trade trade) {
 		// 1.查找入网参数，拼装AuthDockingConfig对象（从配置文件获取）
 		loadConfig();
+		
+		trade.setAgencyCode("shengda");
 		// 2.调用docking.enquiry
 		AuthResult result = docking.enquiry(facade, trade, config);
 		// 4.返回
