@@ -1,0 +1,5 @@
+导出：
+mysqldump -u root -p -B polymer > polymer.160426.sql
+
+导入：
+mysql -u root -p polymer < polymer.160426.sql
