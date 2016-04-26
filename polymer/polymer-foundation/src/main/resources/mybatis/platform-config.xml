@@ -42,4 +42,7 @@
 	<class name="com.payadd.polymer.model.acc.Recharge" table="acc_recharge"
 		map-id="RechargeResultMap">
 	</class>
+	<class name="com.payadd.polymer.model.sys.User" table="sys_user"
+		map-id="UserResultMap">
+	</class>
 </ibatis-mappings>

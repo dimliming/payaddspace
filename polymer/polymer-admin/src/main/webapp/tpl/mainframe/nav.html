@@ -1,0 +1,93 @@
+<!-- list -->
+<ul class="nav">
+
+  <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+    <span translate="aside.nav.components.COMPONENTS">功能模块</span>
+  </li>
+  <li class="line dk hidden-folded"></li>
+  
+  
+  <li ng-class="{active:$state.includes('papp.bdm')}">
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="glyphicon glyphicon-edit"></i>
+      <span>基础数据管理</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li ui-sref-active="active">
+        <a ui-sref="papp.bdm.merchant.list">
+          <span>商户资料管理</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="papp.bdm.securitycfg">
+          <span>商户安全配置</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+  <li ng-class="{active:$state.includes('papp.account')}">
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="glyphicon glyphicon-list"></i>
+      <span>账务管理</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li ui-sref-active="active">
+        <a ui-sref="papp.account.recharge">
+          <span>商户充值</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="papp.account.accdetail">
+          <span>账务明细查询</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="papp.account.balance">
+          <span>商户余额查询</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+  <li ng-class="{active:$state.includes('papp.trade')}">
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="glyphicon glyphicon-list"></i>
+      <span>交易管理</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li ui-sref-active="active">
+        <a ui-sref="papp.trade.enquiry">
+          <span>交易查询</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="papp.trade.merchantmsg">
+          <span>商户报文查询</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="papp.trade.channelmsg">
+          <span>渠道报文查询</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a ui-sref="papp.docs">
+      <i class="icon-question icon"></i>
+      <span translate="aside.nav.your_stuff.DOCUMENTS">Documents</span>
+    </a>
+  </li>
+</ul>
+<!-- / list -->

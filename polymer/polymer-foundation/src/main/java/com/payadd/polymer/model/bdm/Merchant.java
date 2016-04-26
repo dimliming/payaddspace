@@ -33,9 +33,9 @@ public class Merchant {
 	// 组织机构代码
 	private String orgCode;
 	// 证件有效开始时间
-	private int idDurationStart;
+	private Integer idDurationStart;
 	// 证件有效结束时间
-	private int idDurationEnd;
+	private Integer idDurationEnd;
 	// 法定代表人姓名
 	private String representName;
 	// 法定代表人证件号码
@@ -144,19 +144,19 @@ public class Merchant {
 		this.orgCode = orgCode;
 	}
 
-	public int getIdDurationStart() {
+	public Integer getIdDurationStart() {
 		return idDurationStart;
 	}
 
-	public void setIdDurationStart(int idDurationStart) {
+	public void setIdDurationStart(Integer idDurationStart) {
 		this.idDurationStart = idDurationStart;
 	}
 
-	public int getIdDurationEnd() {
+	public Integer getIdDurationEnd() {
 		return idDurationEnd;
 	}
 
-	public void setIdDurationEnd(int idDurationEnd) {
+	public void setIdDurationEnd(Integer idDurationEnd) {
 		this.idDurationEnd = idDurationEnd;
 	}
 

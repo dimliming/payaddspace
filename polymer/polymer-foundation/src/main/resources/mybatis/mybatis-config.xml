@@ -13,5 +13,6 @@
 		<mapper resource="mybatis/AccountMapper.xml" />
 		<mapper resource="mybatis/AccountDetailMapper.xml" />
 		<mapper resource="mybatis/RechargeMapper.xml" />
+		<mapper resource="mybatis/UserMapper.xml" />
 	</mappers>
 </configuration>
