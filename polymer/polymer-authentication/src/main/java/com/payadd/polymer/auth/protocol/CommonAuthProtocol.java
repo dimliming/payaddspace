@@ -131,6 +131,7 @@ public class CommonAuthProtocol implements AuthProtocol {
 		List<String> list =  Arrays.asList(MessageFields.ENQUIRY_FIELDS);
 		// 1)准备好Result
 		AuthResult result = validate(list, msg);
+		
 		if (result.getResultCode() != null) {
 			// TODO:
 			merchantMessage.setRespMsg(result.getReturnMsg());
@@ -168,19 +169,26 @@ public class CommonAuthProtocol implements AuthProtocol {
 			facade.update(merchantMessage);
 			return result;
 		}
+	
 		// 3.组装MerchantMessage，报文类型设置为2，并保存到数据库中(需要保存后就直接commit)
 		// id
+		Long id = IdGenerator.nextLongSequence(MerchantMessage.class);
+		merchantMessage.setId(id);
 		merchantMessage.setMerchantTradeNo(map.get(MessageFields.ORDER_NO));
 		merchantMessage.setMsgType(MessageType.ENQUIRY);
 		merchantMessage.setMerchantCode(map.get(MessageFields.MERCHANT_CODE));
 		String reqMsg = SignUtil.coverMap2String(map);
 		merchantMessage.setReqMsg(reqMsg);
+		
 		facade.insert(merchantMessage);
+		
 		// 4.调用product.enquiry
 		result = product.enquiry(facade, map.get(MessageFields.MERCHANT_CODE), map.get(MessageFields.ORDER_NO));
 		// 5.根据返回的结果，组装反馈报文，放到Result中，
+		System.out.println(result.getResultCode());
 		result.setResultDesc(AuthResultHelper.getDesc(result.getResultCode()));
 		result.setReturnMsg("resp_code=" + result.getResultCode() + "&resp_msg=" + result.getResultDesc());
+		System.out.println(result.getReturnMsg());
 		// 6.更新MerchantMessage的反馈报文字段
 		merchantMessage.setRespMsg(result.getReturnMsg());
 		facade.update(merchantMessage);

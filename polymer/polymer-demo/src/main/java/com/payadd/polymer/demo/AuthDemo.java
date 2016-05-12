@@ -20,7 +20,7 @@ public class AuthDemo {
 	// 每个商户分配md5盐值
 	static String signKey = "111111";
 	// 分配商户号
-	static String merid = "80075501010001";
+	static String merid = "16042666657104525";
 
 	static String pan = "6227003321740369152";
 	static String certifId = "440902199307090413";

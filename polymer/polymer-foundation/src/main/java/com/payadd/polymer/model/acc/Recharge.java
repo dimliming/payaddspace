@@ -1,5 +1,6 @@
 package com.payadd.polymer.model.acc;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -20,7 +21,7 @@ public class Recharge {
 	// 充值渠道
 	private String channelCode;
 	// 金额
-	private Timestamp amt;
+	private BigDecimal amt;
 	
 	public String getRechargeNo() {
 		return rechargeNo;
@@ -54,12 +55,14 @@ public class Recharge {
 		this.channelCode = channelCode;
 	}
 
-	public Timestamp getAmt() {
+	public BigDecimal getAmt() {
 		return amt;
 	}
 
-	public void setAmt(Timestamp amt) {
+	public void setAmt(BigDecimal amt) {
 		this.amt = amt;
 	}
+
+
 
 }

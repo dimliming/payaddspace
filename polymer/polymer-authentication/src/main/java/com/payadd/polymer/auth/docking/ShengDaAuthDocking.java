@@ -3,6 +3,7 @@ package com.payadd.polymer.auth.docking;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import java.util.TreeMap;
 import com.payadd.framework.common.extension.ExtensionDescription;
 import com.payadd.framework.common.toolkit.IdGenerator;
 import com.payadd.framework.ddl.DatabaseFacade;
+import com.payadd.framework.ddl.query.SimpleQuery;
 import com.payadd.polymer.auth.constant.MessageFields;
 import com.payadd.polymer.auth.constant.MessageType;
 import com.payadd.polymer.auth.constant.SystemRespCode;
@@ -20,6 +22,8 @@ import com.payadd.polymer.auth.layer.AuthDocking;
 import com.payadd.polymer.auth.protocol.AuthResultHelper;
 import com.payadd.polymer.auth.utils.HttpClient;
 import com.payadd.polymer.auth.utils.SignUtil;
+import com.payadd.polymer.model.acc.Account;
+import com.payadd.polymer.model.acc.AccountDetail;
 import com.payadd.polymer.model.aut.AuthDockingConfig;
 import com.payadd.polymer.model.aut.AuthResult;
 import com.payadd.polymer.model.aut.ChannelMessage;
@@ -30,6 +34,15 @@ public class ShengDaAuthDocking implements AuthDocking {
 
 	public AuthResult auth(DatabaseFacade facade, Trade trade, AuthDockingConfig config) {
 		AuthResult result = new AuthResult();
+
+		// 验证账户余额
+		SimpleQuery sq = new SimpleQuery(facade, Account.class);
+		sq.eq("merchantCode", trade.getMerchantCode());
+		Account account = (Account) sq.uniqueResult();
+		if (account.getBalance().compareTo(trade.getFee()) == -1) {
+			result.setResultCode(SystemRespCode.BALANCE_NO_ENOUGH);
+			return result;
+		}
 
 		// 1.组装认证报文
 		Map<String, String> contentData = new TreeMap<String, String>();
@@ -55,6 +68,7 @@ public class ShengDaAuthDocking implements AuthDocking {
 		String sign = SignUtil.signData(contentData, config.getMd5Key());
 		// 2.签名
 		contentData.put("signature", sign);
+		System.out.println(contentData);
 		// 3.发送报文
 		HttpClient client = new HttpClient(config.getAuthURL(), 6000, 60000);
 		String reqMsg = getRequestParamString(contentData, "utf-8");
@@ -83,7 +97,7 @@ public class ShengDaAuthDocking implements AuthDocking {
 			return result;
 		}
 		// 8.根据返回的结果，更新channel_trade_no、channel_code、resp_code、resp_msg到trade
-		trade.setChannelTradeNo(responsMap.get("queryId"));
+		trade.setChannelTradeNo(responsMap.get("orderId"));
 		trade.setRespCode(respCodeTranslate(responsMap.get("respCode")));
 		trade.setRespMsg(responsMap.get("respMsg"));
 
@@ -97,6 +111,26 @@ public class ShengDaAuthDocking implements AuthDocking {
 		channelMessage.setRespMsg(respons);
 		channelMessage.setTradeNo(trade.getTradeNo());
 		facade.insert(channelMessage);
+		String respCode = responsMap.get("respCode");
+		if (respCode.equals("00") || respCode.equals("04") || respCode.equals("05")) {
+			// 扣费
+			// 查找账户
+
+			// 账户收支明细
+			AccountDetail accountDetail = new AccountDetail();
+			accountDetail.setId(IdGenerator.nextLongSequence(AccountDetail.class));
+			accountDetail.setAccountNo(account.getAccountNo());
+			accountDetail.setMerchantCode(account.getMerchantCode());
+			accountDetail.setTradeTime(new Timestamp(System.currentTimeMillis()));
+			accountDetail.setAccountTime(new Timestamp(System.currentTimeMillis()));
+			accountDetail.setTradeType(10);
+			accountDetail.setTradeNo(trade.getTradeNo());
+			accountDetail.setAmt(account.getBalance());
+			accountDetail.setBalance(account.getBalance().subtract(trade.getFee()));
+			facade.insert(accountDetail);
+			account.setBalance(accountDetail.getBalance());
+			facade.update(account);
+		}
 
 		// 7.将结果封装到Result，返回
 		result.setResultCode(trade.getRespCode());
@@ -105,7 +139,7 @@ public class ShengDaAuthDocking implements AuthDocking {
 
 	public AuthResult enquiry(DatabaseFacade facade, Trade trade, AuthDockingConfig config) {
 		AuthResult result = new AuthResult();
-
+		// 获取商户trade的信息
 		// 1.组装查询报文
 		Map<String, String> contentData = new TreeMap<String, String>();
 		contentData.put("version", "5.0.0");
@@ -115,12 +149,11 @@ public class ShengDaAuthDocking implements AuthDocking {
 		contentData.put("txnType", "01");
 		contentData.put("merId", config.getSubMerchantCode());
 		// 商户原交易订单号
-		contentData.put("orderId", trade.getTradeNo());
+		contentData.put("orderId", trade.getChannelTradeNo());
 		// 商户原交易订单时间
 		contentData.put("txnTime",
 				new SimpleDateFormat("yyyyMMddhhmmss").format(new Date(trade.getTradeTime().getTime())));
 		String sign = SignUtil.signData(contentData, config.getMd5Key());
-
 		// 2.签名
 		contentData.put("signature", sign);
 		// 3.发送报文

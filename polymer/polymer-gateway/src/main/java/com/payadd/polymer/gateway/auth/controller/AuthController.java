@@ -56,6 +56,7 @@ public class AuthController {
 			result = authService.auth(msg);
 		}else if ("01".equals(txnType)){//认证查询
 			result = authService.enquiry(msg);
+			
 		}
 		
 		try {

@@ -20,9 +20,9 @@ public class Account {
 	//账户余额
 	private BigDecimal balance;
 	//账户状态
-	private int status; //0-正常,1-销户
+	private Integer status; //0-正常,1-销户
 	//时间戳
-	private long timestamp;
+	private Long timestamp;
 	
 	public String getAccountNo() {
 		return accountNo;
@@ -48,17 +48,18 @@ public class Account {
 	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
 	}
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public long getTimestamp() {
+	public Long getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(long timestamp) {
+	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
+
 	
 }

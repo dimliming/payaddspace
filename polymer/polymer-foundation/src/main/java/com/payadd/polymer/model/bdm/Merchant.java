@@ -12,6 +12,22 @@ import java.sql.Timestamp;
  *
  */
 public class Merchant {
+	@Override
+	public String toString() {
+		return "Merchant [merchantCode=" + merchantCode + ", fullName=" + fullName + ", shortName=" + shortName
+				+ ", status=" + status + ", listFlag=" + listFlag + ", level=" + level + ", siteName=" + siteName
+				+ ", siteAddress=" + siteAddress + ", businessLicense=" + businessLicense + ", orgCode=" + orgCode
+				+ ", idDurationStart=" + idDurationStart + ", idDurationEnd=" + idDurationEnd + ", representName="
+				+ representName + ", representIdCode=" + representIdCode + ", businessScope=" + businessScope
+				+ ", registeredCapital=" + registeredCapital + ", registeredAddress=" + registeredAddress
+				+ ", industryClass=" + industryClass + ", companyEmail=" + companyEmail + ", companyAddress="
+				+ companyAddress + ", companyPhone=" + companyPhone + ", companyTax=" + companyTax + ", contactName="
+				+ contactName + ", contactPosition=" + contactPosition + ", contactSex=" + contactSex
+				+ ", contactEmail=" + contactEmail + ", contactPhone=" + contactPhone + ", contactTel=" + contactTel
+				+ ", contactQQ=" + contactQQ + ", createUserId=" + createUserId + ", updateUserId=" + updateUserId
+				+ ", createTime=" + createTime + ", lastUpdateTime=" + lastUpdateTime + "]";
+	}
+
 	// 商户编码
 	private String merchantCode;
 	// 商户全称

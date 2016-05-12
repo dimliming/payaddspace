@@ -1,0 +1,166 @@
+<div class="wrapper bg-light lter b-b">
+	<a href ng-click="goBack()" class="btn btn-sm btn-default w-xxs m-r-sm"
+		tooltip="返回列表"><i class="fa fa-long-arrow-left"></i></a>
+</div>
+<div class="wrapper-md">
+	<div>
+		<div class="row">
+			<div class="col-sm-12">
+				<form name="editform" class="form-horizontal form-validation">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong >交易详情</strong> 
+						</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">交易号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.tradeNo" disabled>
+								</div>
+								<label class="col-sm-2 control-label">商户编码</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.merchantCode" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">商户名称</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.fullName" disabled>
+								</div>
+								<label class="col-sm-2 control-label">是否测试</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.isTest" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">商户交易号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.merchantTradeNo" disabled>
+								</div>
+								<label class="col-sm-2 control-label">渠道交易号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.channelTradeNo" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">产品编号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.productCode" disabled>
+								</div>
+								<label class="col-sm-2 control-label">机构代号</label>
+								<div class="col-sm-4">
+									<input type="url" class="form-control"
+										ng-model="entity.agencyCode" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">交易时间</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.tradeTime" disabled>
+								</div>
+								<label class="col-sm-2 control-label">验证方式</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.authType" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">账号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.accountNo" disabled>
+								</div>
+								<label class="col-sm-2 control-label">证件类型 </label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.certType" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">证件号码</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.certNo" disabled>
+								</div>
+								<label class="col-sm-2 control-label">姓名</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.customName" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">手机号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.phone" disabled>
+								</div>
+								<label class="col-sm-2 control-label">交易费用</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.fee" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">是否已核销</label>
+								<div class="col-sm-4">
+									<input type="email" class="form-control"
+										ng-model="entity.isWriteOff" disabled>
+								</div>
+								<label class="col-sm-2 control-label">渠道应答码</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" ng-model="entity.respCode" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">渠道应答消息</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.respMsg" disabled>
+								</div>
+								<label class="col-sm-2 control-label">状态</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.status" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">商户通知URL</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.notifyUrl" disabled>
+								</div>
+								<label class="col-sm-2 control-label">反馈状态</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.notifyStatus" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">反馈次数</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.notifyNum" disabled>
+								</div>
+								<label class="col-sm-2 control-label">反馈时间</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.notifyTime" disabled>
+								</div>
+							</div>
+						</div>
+						<footer class="panel-footer text-right bg-light lter">
+						</footer>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

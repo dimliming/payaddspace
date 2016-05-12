@@ -2,6 +2,7 @@ package com.payadd.polymer.model.aut;
 
 /**
  * 商户请求日志
+ * 
  * @Project PayAdd
  * @Date 2016-3-29
  * @author ming.li
@@ -9,24 +10,32 @@ package com.payadd.polymer.model.aut;
  */
 public class MerchantMessage {
 	// 主键
-	private long id;
+	private Long id;
 	// 商户交易号
 	private String merchantTradeNo;
 	// 商户编码
 	private String merchantCode;
 	// 报文类型
-	private int msgType;// 1-认证 ,2-查询,3-反馈
+	private Integer msgType;// 1-认证 ,2-查询,3-反馈
 	// 接收报文
 	private String reqMsg;
 	// 反馈报文
 	private String respMsg;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Integer getMsgType() {
+		return msgType;
+	}
+
+	public void setMsgType(Integer msgType) {
+		this.msgType = msgType;
 	}
 
 	public String getMerchantTradeNo() {
@@ -43,14 +52,6 @@ public class MerchantMessage {
 
 	public void setMerchantCode(String merchantCode) {
 		this.merchantCode = merchantCode;
-	}
-
-	public int getMsgType() {
-		return msgType;
-	}
-
-	public void setMsgType(int msgType) {
-		this.msgType = msgType;
 	}
 
 	public String getReqMsg() {

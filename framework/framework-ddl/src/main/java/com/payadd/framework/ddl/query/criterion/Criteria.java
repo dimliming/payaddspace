@@ -310,6 +310,7 @@ public class Criteria implements java.io.Serializable{
 				parameters.addAll(j.getRightCriteria().getParameters());
 			}
 		}
+		
 		return parameters;
 	}
 	public Criteria leftjoin(Criteria c,String[] leftProperties,String[] rightProperties){

@@ -1,0 +1,78 @@
+<div class="wrapper bg-light lter b-b">
+	<a href ng-click="goBack()" class="btn btn-sm btn-default w-xxs m-r-sm"
+		tooltip="返回列表"><i class="fa fa-long-arrow-left"></i></a>
+</div>
+<div class="wrapper-md">
+	<div>
+		<div class="row">
+			<div class="col-sm-12">
+				<form name="editform" class="form-horizontal form-validation">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong ng-if="entity.id==undefined">新增配置</strong> <strong
+								ng-if="entity.id!=undefined">修改配置</strong>
+						</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">商户编码</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.merchantCode" disabled>
+								</div>
+								<label class="col-sm-2 control-label">协议编号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.protocolCode" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">签名算法</label>
+								<div class="col-sm-4">
+									<select class="form-control" ng-model="entity.signAlg" required>
+										<option value="M">MD5</option>
+										<option value="S">S-SHA1</option>
+										<option value="R">RSA</option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">签名key</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" ng-model="entity.signKey"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">加密算法</label>
+								<div class="col-sm-4">
+									<select class="form-control" ng-model="entity.cryptoAlg">
+										<option value="AES">AES</option>
+										<option value="DES">DES</option>
+										<option value="3DES">3DES</option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">加密key</label>
+								<div class="col-sm-4">
+									<input type="url" class="form-control"
+										ng-model="entity.cryptoKey" >
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">RSA公钥</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.publicKey">
+								</div>
+								<label class="col-sm-2 control-label">RSA私钥</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.privateKey">
+								</div>
+							</div>
+						</div>
+						<footer class="panel-footer text-right bg-light lter">
+							<button type="submit" class="btn btn-success" ng-click="save()">保存</button>
+						</footer>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

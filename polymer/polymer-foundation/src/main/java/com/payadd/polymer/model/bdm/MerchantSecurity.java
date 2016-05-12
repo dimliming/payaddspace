@@ -15,7 +15,7 @@ public class MerchantSecurity {
 	// 协议编号
 	private String protocolCode;
 	// 签名算法
-	private char signAlg; //M-MD5,S-SHA1,R-RSA
+	private String signAlg; //M-MD5,S-SHA1,R-RSA
 	// 签名Key
 	private String signKey;
 	// 加密算法
@@ -51,11 +51,13 @@ public class MerchantSecurity {
 		this.protocolCode = protocolCode;
 	}
 
-	public char getSignAlg() {
+
+
+	public String getSignAlg() {
 		return signAlg;
 	}
 
-	public void setSignAlg(char signAlg) {
+	public void setSignAlg(String signAlg) {
 		this.signAlg = signAlg;
 	}
 

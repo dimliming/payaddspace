@@ -1,0 +1,67 @@
+<div class="wrapper bg-light lter b-b">
+	<a href ng-click="goBack()" class="btn btn-sm btn-default w-xxs m-r-sm"
+		tooltip="返回列表"><i class="fa fa-long-arrow-left"></i></a>
+</div>
+<div class="wrapper-md">
+	<div>
+		<div class="row">
+			<div class="col-sm-12">
+				<form name="editform" class="form-horizontal form-validation">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong>充值</strong>
+						</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">账户编号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.accountNo" disabled>
+								</div>
+								<label class="col-sm-2 control-label">商户编号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.merchantCode" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">开户日期</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.openTime" disabled>
+								</div>
+								<label class="col-sm-2 control-label">账户余额</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.balance" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">账户状态</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.status" disabled>
+								</div>
+								<label class="col-sm-2 control-label">时间戳</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.timestamp" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">充值金额</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control" ng-init="condition.money=0" ng-model="condition.money">
+								</div>
+							</div>
+						</div>
+						<footer class="panel-footer text-right bg-light lter">
+								<button type="submit" class="btn btn-success"
+										ng-click="save()">保存</button>
+						</footer>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

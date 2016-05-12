@@ -12,7 +12,7 @@ import java.sql.Timestamp;
  */
 public class AccountDetail {
 	//主键
-	private long id;
+	private Long id;
 	//账户编号
 	private String accountNo;
 	//商户编号
@@ -22,19 +22,14 @@ public class AccountDetail {
 	//记账时间
 	private Timestamp accountTime;
 	//交易类型
-	private int tradeType;//10-充值,20-认证
+	private Integer tradeType;//10-充值,20-认证
 	//交易编号
 	private String tradeNo;
 	//金额
 	private BigDecimal amt;
 	//变动后余额
 	private BigDecimal balance;
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
+
 	public String getAccountNo() {
 		return accountNo;
 	}
@@ -59,12 +54,7 @@ public class AccountDetail {
 	public void setAccountTime(Timestamp accountTime) {
 		this.accountTime = accountTime;
 	}
-	public int getTradeType() {
-		return tradeType;
-	}
-	public void setTradeType(int tradeType) {
-		this.tradeType = tradeType;
-	}
+
 	public String getTradeNo() {
 		return tradeNo;
 	}
@@ -83,5 +73,18 @@ public class AccountDetail {
 	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Integer getTradeType() {
+		return tradeType;
+	}
+	public void setTradeType(Integer tradeType) {
+		this.tradeType = tradeType;
+	}
+	
 	
 }

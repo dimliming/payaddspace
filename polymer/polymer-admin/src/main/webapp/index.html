@@ -1,6 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="app"><!-- 通过这个指令，angular可以自动加载app这个module，在data-ng-app中没有指定module，那么必须要要通过angular.bootstrap这样的JS语句手工加载 -->
+<html xmlns:ng="http://angularjs.org" lang="en" data-ng-app="app"><!-- 通过这个指令，angular可以自动加载app这个module，在data-ng-app中没有指定module，那么必须要要通过angular.bootstrap这样的JS语句手工加载 -->
 <head>
+
+ <!--[if lte IE 8]>
+     <script>
+        document.createElement('ng-include');
+        document.createElement('ng-pluralize');
+        document.createElement('ng-view');
+        // Optionally these for CSS
+       document.createElement('ng:include');
+       document.createElement('ng:pluralize');
+       document.createElement('ng:view');
+      </script>
+   <![endif]-->
   <meta charset="utf-8" />
   <title>运营后台</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />

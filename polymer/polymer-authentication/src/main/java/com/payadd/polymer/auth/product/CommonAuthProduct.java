@@ -92,6 +92,7 @@ public class CommonAuthProduct implements AuthProduct {
 		sq.eq("merchantTradeNo", merchantTradeNo);
 		sq.eq("merchantCode", merchaneCode);
 		Trade trade = (Trade) sq.uniqueResult();
+
 		// 2.如果trade==null，封装错误信息返回
 		if (trade == null) {
 			result.setResultCode(SystemRespCode.MERCHANT_TRADE_NULL);
@@ -99,13 +100,32 @@ public class CommonAuthProduct implements AuthProduct {
 			result.setReturnMsg("resp_code=" + result.getResultCode() + "&resp_msg=" + result.getResultDesc());
 			return result;
 		}
-		// 3.如果trade的状态=2-已提交渠道，那么调用agency.enquiry获取最新的状态
-		if (trade.getStatus() == 2) {
-			agency.enquiry(facade, trade);
+
+		// 3.如果trade的状态=1-已提交渠道，那么调用agency.enquiry获取最新的状态
+		if (trade.getStatus() == 1) {
+
+			result = agency.enquiry(facade, trade);
+		} else if (trade.getStatus() == 0) {
+			result = auth(facade, trade);
+			return result;
+		} else {
+			result.setResultCode(trade.getRespCode());
+			result.setResultDesc(AuthResultHelper.getDesc(result.getResultCode()));
+			result.setReturnMsg("resp_code=" + result.getResultCode() + "&resp_msg=" + result.getResultDesc());
+			return result;
 		}
 		// 4.如果获取回来的状态有变化，更新到trade中
-
+		if (!trade.getRespCode().equals(result.getResultCode())) {
+			if (AuthResultHelper.isSuccess(result)) {
+				trade.setStatus(TradeStatus.AUTH_SUCCESS);
+			} else {
+				trade.setStatus(TradeStatus.AUTH_FAIL);
+			}
+			trade.setRespCode(result.getResultCode());
+			trade.setRespMsg(AuthResultHelper.getDesc(result.getResultCode()));
+		}
 		// 5.获取trade的status，反馈给上一层
+
 		return result;
 	}
 
@@ -117,7 +137,7 @@ public class CommonAuthProduct implements AuthProduct {
 		simpleQuery.eq("status", 4);
 		simpleQuery.ne("isTest", "Y");
 		List<Trade> list = simpleQuery.ListEntity();
-		
+
 		// 2.循环每一条交易
 		for (Trade trade : list) {
 			// 3.检查商户余额是否足够，如果不够，发送邮件给管理员，退出循环

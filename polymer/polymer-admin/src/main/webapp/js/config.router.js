@@ -667,6 +667,7 @@ angular.module('app')
                   resolve: {
                       deps: ['uiLoad',
                         function( uiLoad){
+                    	  
                           return uiLoad.load('js/controllers/bdm/merchant.js');
                       }]
                   }
@@ -677,17 +678,32 @@ angular.module('app')
                   resolve: {
                       deps: ['uiLoad',
                         function( uiLoad){
+                    	 
                           return uiLoad.load('js/controllers/bdm/merchant.js');
                       }]
                   }
               })
               .state('papp.bdm.securitycfg', {
                   url: '/securitycfg',
-                  templateUrl: 'tpl/ui_scroll.html',
+                  template: "<div ui-view class='fade-in-up' ng-controller='MerchantSecCtrl'></div>",  
+              })
+             .state('papp.bdm.securitycfg.configlist', {
+                  url: '/configlist',
+                  templateUrl: 'tpl/bdm/merchant-security-list.html',
                   resolve: {
                       deps: ['uiLoad',
                         function( uiLoad){
-                          return uiLoad.load('js/controllers/scroll.js');
+                          return uiLoad.load('js/controllers/bdm/merchant-security.js');
+                      }]
+                  }
+              })
+               .state('papp.bdm.securitycfg.securityedit', {
+                  url: '/configlist',
+                  templateUrl: 'tpl/bdm/merchant-security-edit.html',
+                  resolve: {
+                      deps: ['uiLoad',
+                        function( uiLoad){
+                          return uiLoad.load('js/controllers/bdm/merchant-security.js');
                       }]
                   }
               })
@@ -698,66 +714,128 @@ angular.module('app')
               })
               .state('papp.account.recharge', {
                   url: '/recharge',
-                  templateUrl: 'tpl/ui_scroll.html',
+                  template: "<div ui-view class='fade-in-up' ng-controller='RechargeCtrl'></div>",            
+              })
+               .state('papp.account.recharge.edit', {
+                  url: '/edit',
+                  templateUrl: 'tpl/bdm/recharge-edit.html',
                   resolve: {
                       deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load('js/controllers/scroll.js');
+                        function( uiLoad){ 
+                          return uiLoad.load('js/controllers/bdm/recharge.js');
                       }]
                   }
               })
-              .state('papp.account.accdetail', {
-                  url: '/accdetail',
-                  templateUrl: 'tpl/ui_scroll.html',
+              
+              .state('papp.account.recharge.enquiry', {
+                  url: '/enquiry',
+                  templateUrl: 'tpl/bdm/recharge-list.html',
                   resolve: {
                       deps: ['uiLoad',
                         function( uiLoad){
-                          return uiLoad.load('js/controllers/scroll.js');
+                          return uiLoad.load('js/controllers/bdm/recharge.js');
+                      }]
+                  }
+              })
+               .state('papp.account.detail', {
+                  url: '/recharge',
+                  template: "<div ui-view class='fade-in-up' ng-controller='AccountDetailCtrl'></div>",            
+              })
+              .state('papp.account.detail.list', {
+                  url: '/accdetail',
+                  templateUrl: 'tpl/bdm/accountDetail-list.html',
+                  resolve: {
+                      deps: ['uiLoad',
+                        function( uiLoad){
+                          return uiLoad.load('js/controllers/bdm/accountDetail.js');
                       }]
                   }
               })
               .state('papp.account.balance', {
                   url: '/balance',
-                  templateUrl: 'tpl/ui_scroll.html',
+                  template: "<div ui-view class='fade-in-up' ng-controller='BalanceCtrl'></div>", 
+              })
+               .state('papp.account.balance.list', {
+                  url: '/accdetail',
+                  templateUrl: 'tpl/bdm/balance-list.html',
                   resolve: {
                       deps: ['uiLoad',
                         function( uiLoad){
-                          return uiLoad.load('js/controllers/scroll.js');
+                          return uiLoad.load('js/controllers/bdm/balance.js');
                       }]
                   }
               })
               //交易管理
               .state('papp.trade', {
                   url: '/trade',
-                  template: '<div ui-view class="fade-in-up"></div>'
+                  template: '<div ui-view class="fade-in-up" ng-controller="TradeCtrl"></div>'
+              })
+               .state('papp.trade.edit', {
+                  url: '/edit',
+                  templateUrl: 'tpl/bdm/trade-detail.html',
+                  resolve: {
+                      deps: ['uiLoad',
+                        function( uiLoad){
+                    	 
+                          return uiLoad.load('js/controllers/bdm/trade.js');
+                      }]
+                  }
               })
               .state('papp.trade.enquiry', {
                   url: '/enquiry',
-                  templateUrl: 'tpl/ui_scroll.html',
+                  templateUrl: 'tpl/bdm/trade-list.html',
                   resolve: {
                       deps: ['uiLoad',
                         function( uiLoad){
-                          return uiLoad.load('js/controllers/scroll.js');
+                          return uiLoad.load('js/controllers/bdm/trade.js');
                       }]
                   }
               })
-              .state('papp.trade.merchantmsg', {
+              .state('papp.merchantmsg', {
                   url: '/merchantmsg',
-                  templateUrl: 'tpl/ui_scroll.html',
+                  template: '<div ui-view class="fade-in-up" ng-controller="MerchantMsgCtrl"></div>'
+              })
+               .state('papp.merchantmsg.enquiry', {
+                  url: '/enquiry',
+                  templateUrl: 'tpl/bdm/merchantmsg-list.html',
                   resolve: {
                       deps: ['uiLoad',
                         function( uiLoad){
-                          return uiLoad.load('js/controllers/scroll.js');
+                          return uiLoad.load('js/controllers/bdm/merchantMsg.js');
                       }]
                   }
               })
-              .state('papp.trade.channelmsg', {
+               .state('papp.merchantmsg.edit', {
+                  url: '/edit',
+                  templateUrl: 'tpl/bdm/merchantmsg-edit.html',
+                  resolve: {
+                      deps: ['uiLoad',
+                        function( uiLoad){	 
+                          return uiLoad.load('js/controllers/bdm/merchantMsg.js');
+                      }]
+                  }
+              })
+              .state('papp.channelmsg', {
                   url: '/channelmsg',
-                  templateUrl: 'tpl/ui_scroll.html',
+                  template: '<div ui-view class="fade-in-up" ng-controller="ChannelMsgCtrl"></div>'
+              })
+               .state('papp.channelmsg.enquiry', {
+                  url: '/enquiry',
+                  templateUrl: 'tpl/bdm/channelmsg-list.html',
                   resolve: {
                       deps: ['uiLoad',
                         function( uiLoad){
-                          return uiLoad.load('js/controllers/scroll.js');
+                          return uiLoad.load('js/controllers/bdm/channelMsg.js');
+                      }]
+                  }
+              })
+               .state('papp.channelmsg.edit', {
+                  url: '/edit',
+                  templateUrl: 'tpl/bdm/channelmsg-edit.html',
+                  resolve: {
+                      deps: ['uiLoad',
+                        function( uiLoad){	 
+                          return uiLoad.load('js/controllers/bdm/channelMsg.js');
                       }]
                   }
               })

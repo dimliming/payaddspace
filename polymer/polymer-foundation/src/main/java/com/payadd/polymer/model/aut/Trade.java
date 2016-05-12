@@ -22,9 +22,9 @@ public class Trade {
 	//渠道交易号
 	private String channelTradeNo;//视渠道返回情况，可为空
 	
-	//渠道代号
+	//产品编号
 	private String productCode;
-	
+	//机构代码
 	private String agencyCode;
 	//交易时间
 	private Timestamp tradeTime;
@@ -49,13 +49,13 @@ public class Trade {
 	//渠道应答消息
 	private String respMsg;
 	//状态
-	private int status;//0-未提交渠道,1-已提交渠道,2-认证失败,3-认证成功
+	private Integer status;//0-未提交渠道,1-已提交渠道,2-认证失败,3-认证成功
 	//商户通知URL
 	private String notifyUrl;//对于异步接口，需要传递这个字段
 	//反馈状态
-	private int notifyStatus;//0-未反馈,1-已反馈
+	private Integer notifyStatus;//0-未反馈,1-已反馈
 	//反馈次数
-	private int notifyNum;
+	private Integer notifyNum;
 	//反馈时间
 	private Timestamp notifyTime;
 	//是否测试
@@ -169,11 +169,24 @@ public class Trade {
 	public void setRespMsg(String respMsg) {
 		this.respMsg = respMsg;
 	}
-	public int getStatus() {
+
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	public Integer getNotifyStatus() {
+		return notifyStatus;
+	}
+	public void setNotifyStatus(Integer notifyStatus) {
+		this.notifyStatus = notifyStatus;
+	}
+	public Integer getNotifyNum() {
+		return notifyNum;
+	}
+	public void setNotifyNum(Integer notifyNum) {
+		this.notifyNum = notifyNum;
 	}
 	public String getNotifyUrl() {
 		return notifyUrl;
@@ -181,18 +194,7 @@ public class Trade {
 	public void setNotifyUrl(String notifyUrl) {
 		this.notifyUrl = notifyUrl;
 	}
-	public int getNotifyStatus() {
-		return notifyStatus;
-	}
-	public void setNotifyStatus(int notifyStatus) {
-		this.notifyStatus = notifyStatus;
-	}
-	public int getNotifyNum() {
-		return notifyNum;
-	}
-	public void setNotifyNum(int notifyNum) {
-		this.notifyNum = notifyNum;
-	}
+
 	public Timestamp getNotifyTime() {
 		return notifyTime;
 	}

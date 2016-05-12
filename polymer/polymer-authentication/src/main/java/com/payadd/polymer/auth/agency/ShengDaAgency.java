@@ -15,36 +15,26 @@ import com.payadd.polymer.model.aut.Trade;
 @ExtensionDescription(code = "shengda", name = "盛大")
 public class ShengDaAgency implements AuthAgency {
 	private static final String CONFIG_LOCATION = "docking-config/shengda-agency.properties";
+	private static final String CONFIG_LOCATION_TEST = "docking-config/test-agency.properties";
 	private static AuthDockingConfig config;
 
 	@Router("authDockingRouter")
 	private AuthDocking docking;
 
-	private static void loadConfig() {
-
-		if (config != null)
-			return;
-
-		config = new AuthDockingConfig();
-		Properties dockingProp = new Properties();
-
-		try {
-			dockingProp.load(ShengDaAgency.class.getClassLoader().getResource(CONFIG_LOCATION).openStream());
-		} catch (IOException e) {
-			e.printStackTrace();
+	private static void loadConfig(String isTest) {
+		if("N".equals(isTest)){
+			getConfig(CONFIG_LOCATION);
+		}else{
+			getConfig(CONFIG_LOCATION_TEST);
 		}
-		// TODO:
-		config.setAuthURL(dockingProp.getProperty("authURL"));
-		config.setEnquiryURL(dockingProp.getProperty("enquiryURL"));
-		config.setMd5Key(dockingProp.getProperty("sign_key"));
-		config.setSubMerchantCode(dockingProp.getProperty("merchant_code"));
+		
 
 	}
 
 	public AuthResult auth(DatabaseFacade facade, Trade trade) {
 		// 1.查找入网参数，拼装AuthDockingConfig对象（从配置文件获取）
-		loadConfig();
-
+		loadConfig(trade.getIsTest());
+		
 		// 2.设置trade的agencyCode="shengda"
 		trade.setAgencyCode("shengda");
 		// 3.调用docking.auth
@@ -56,13 +46,32 @@ public class ShengDaAgency implements AuthAgency {
 
 	public AuthResult enquiry(DatabaseFacade facade, Trade trade) {
 		// 1.查找入网参数，拼装AuthDockingConfig对象（从配置文件获取）
-		loadConfig();
+		loadConfig(trade.getIsTest());
 		
 		trade.setAgencyCode("shengda");
 		// 2.调用docking.enquiry
 		AuthResult result = docking.enquiry(facade, trade, config);
 		// 4.返回
 		return result;
+	}
+	
+	private static void getConfig(String configLocation){
+		if (config != null)
+			return;
+
+		config = new AuthDockingConfig();
+		Properties dockingProp = new Properties();
+
+		try {
+			dockingProp.load(ShengDaAgency.class.getClassLoader().getResource(configLocation).openStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// TODO:
+		config.setAuthURL(dockingProp.getProperty("authURL"));
+		config.setEnquiryURL(dockingProp.getProperty("enquiryURL"));
+		config.setMd5Key(dockingProp.getProperty("sign_key"));
+		config.setSubMerchantCode(dockingProp.getProperty("merchant_code"));
 	}
 
 }
