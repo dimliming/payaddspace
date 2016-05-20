@@ -1,0 +1,66 @@
+<div class="wrapper bg-light lter b-b">
+	<a href ng-click="goBack()" class="btn btn-sm btn-default w-xxs m-r-sm"
+		tooltip="返回列表"><i class="fa fa-long-arrow-left"></i></a>
+</div>
+<div class="wrapper-md">
+	<div>
+		<div class="row">
+			<div class="col-sm-12">
+				<form name="editform" class="form-horizontal form-validation">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong>渠道报文详情</strong>
+						</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">报文ID</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" ng-model="entity.id"
+										disabled>
+								</div>
+								<label class="col-sm-2 control-label">交易号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.tradeNo" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">渠道代号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.channelCode" disabled>
+								</div>
+								<label class="col-sm-2 control-label">商户编号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.merchantCode" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">报文类型</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.msgType" disabled>
+								</div>
+								<label class="col-sm-2 control-label">响应报文</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.respMsg" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">请求报文</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.reqMsg" disabled>
+								</div>
+
+							</div>
+						</div>
+						<footer class="panel-footer text-right bg-light lter"> </footer>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

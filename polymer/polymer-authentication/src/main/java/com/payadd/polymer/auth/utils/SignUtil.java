@@ -45,7 +45,12 @@ public class SignUtil {
 		String[] strs = respons.split("&");
 		for (String str : strs) {
 			String[] entres = str.split("=");
-			map.put(entres[0], entres[1]);
+			if(entres.length==2){
+				map.put(entres[0], entres[1]);
+			}else{
+				map.put(entres[0], "");
+			}
+			
 		}
 		return map;
 

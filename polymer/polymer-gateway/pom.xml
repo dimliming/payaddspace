@@ -62,6 +62,8 @@
 
   </dependencies>
   <build>
+  <!-- 设置war包名称 -->    
+  <finalName>gateway</finalName>
   	<plugins>
 		<plugin>
 			<groupId>org.apache.tomcat.maven</groupId>

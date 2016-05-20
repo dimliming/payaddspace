@@ -20,7 +20,7 @@ public class AuthDemo {
 	// 每个商户分配md5盐值
 	static String signKey = "111111";
 	// 分配商户号
-	static String merid = "16042666657104525";
+	static String merid = "16051358514059177";
 
 	static String pan = "6227003321740369152";
 	static String certifId = "440902199307090413";
@@ -49,10 +49,10 @@ public class AuthDemo {
 		contentData.put("cert_no", certifId);
 		contentData.put("custom_name", username);
 		contentData.put("phone", phone);
-		contentData.put("is_test", "N");
+		contentData.put("is_test", "Y");
 		String sign = signData(contentData);
 		contentData.put("signature", sign);
-		HttpClient client = new HttpClient("http://localhost:8080/gateway/auth/docking", 6000, 60000);
+		HttpClient client = new HttpClient("http://120.76.100.24/gateway/auth/docking", 6000, 60000);
 		client.send(contentData, "utf-8");
 		String respons = client.getResult();
 		String str = URLDecoder.decode(respons, "utf-8");

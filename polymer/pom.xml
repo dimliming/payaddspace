@@ -20,5 +20,6 @@
     <module>polymer-authentication</module>
 
     <module>polymer-demo</module>
-	</modules>
+    <module>polymer-merchant</module>
+  </modules>
 </project>

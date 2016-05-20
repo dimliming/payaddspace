@@ -20,9 +20,11 @@ import com.payadd.framework.common.toolkit.IdGenerator;
 import com.payadd.framework.common.toolkit.JsonUtil;
 import com.payadd.framework.ddl.query.PaginationQuery;
 import com.payadd.framework.ddl.query.SimpleQuery;
+import com.payadd.merchant.contant.MerchantContant;
 import com.payadd.polymer.base.BaseController;
 import com.payadd.polymer.model.acc.Account;
 import com.payadd.polymer.model.bdm.Merchant;
+import com.payadd.polymer.model.bdm.MerchantUser;
 import com.payadd.polymer.model.sys.User;
 
 @Controller("merchantController")
@@ -95,6 +97,19 @@ public class MerchantController extends BaseController {
 			entity.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			entity.setCreateUserId(user.getLoginName());
 			entity.setLevel("00");
+			//为新增商户添加后台用户
+			MerchantUser merchantUser = new MerchantUser();
+			merchantUser.setId(IdGenerator.nextLongSequence(Account.class));
+			merchantUser.setMerchantCode(entity.getMerchantCode());
+			merchantUser.setUserName(entity.getFullName());
+			merchantUser.setPhone(entity.getCompanyPhone());
+			merchantUser.setEmail(entity.getCompanyEmail());
+			merchantUser.setLoginName(entity.getMerchantCode());
+			merchantUser.setPassword(MerchantContant.DEFAULT_PASSWORD);
+			merchantUser.setCreateTime(new Timestamp(System.currentTimeMillis()));
+			merchantUser.setLastUpdateTime(new Timestamp(System.currentTimeMillis()));
+			facade.insert(merchantUser);
+			
 			// 为新增用户开账户
 			Account account = new Account();
 			account.setAccountNo(IdGenerator.nextLongSequence(Account.class).toString());

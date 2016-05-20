@@ -14,14 +14,14 @@ import com.payadd.polymer.model.aut.Trade;
 
 @ExtensionDescription(code = "shengda", name = "盛大")
 public class ShengDaAgency implements AuthAgency {
-	private static final String CONFIG_LOCATION = "docking-config/shengda-agency.properties";
-	private static final String CONFIG_LOCATION_TEST = "docking-config/test-agency.properties";
+	public static final String CONFIG_LOCATION = "docking-config/shengda-agency.properties";
+	public static final String CONFIG_LOCATION_TEST = "docking-config/test-agency.properties";
 	private static AuthDockingConfig config;
 
 	@Router("authDockingRouter")
 	private AuthDocking docking;
 
-	private static void loadConfig(String isTest) {
+	public static void loadConfig(String isTest) {
 		if("N".equals(isTest)){
 			getConfig(CONFIG_LOCATION);
 		}else{
@@ -55,9 +55,8 @@ public class ShengDaAgency implements AuthAgency {
 		return result;
 	}
 	
-	private static void getConfig(String configLocation){
-		if (config != null)
-			return;
+	public static void getConfig(String configLocation){
+		
 
 		config = new AuthDockingConfig();
 		Properties dockingProp = new Properties();

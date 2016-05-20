@@ -1,0 +1,57 @@
+
+<div class="wrapper-md">
+	<div>
+		<div class="row">
+			<div class="col-sm-12">
+				<form name="editform" class="form-horizontal form-validation">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong>账户资料</strong>
+						</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">账户编号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.accountNo" disabled>
+								</div>
+								<label class="col-sm-2 control-label">商户编号</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.merchantCode" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">开户日期</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.openTime" disabled>
+								</div>
+								<label class="col-sm-2 control-label">账户余额</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.balance" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">账户状态</label>
+								<div class="col-sm-4">
+										<select class="form-control" ng-model="entity.status" disabled>
+										<option value="0">正常</option>
+										<option value="1">销户</option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">时间戳</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.timestamp" disabled>
+								</div>
+							</div>
+						</div>
+	
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

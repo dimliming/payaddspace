@@ -9,7 +9,7 @@
 				<form name="editform" class="form-horizontal form-validation">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<strong >交易详情</strong> 
+							<strong>交易详情</strong>
 						</div>
 						<div class="panel-body">
 							<div class="form-group">
@@ -32,8 +32,10 @@
 								</div>
 								<label class="col-sm-2 control-label">是否测试</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control"
-										ng-model="entity.isTest" disabled>
+									<select class="form-control" ng-model="entity.isTest" disabled>
+										<option value="N">否</option>
+										<option value="Y">是</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -68,8 +70,16 @@
 								</div>
 								<label class="col-sm-2 control-label">验证方式</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control"
-										ng-model="entity.authType" disabled>
+									<select class="form-control" ng-model="entity.authType"
+										disabled>
+										<option value="1111">四要素验证</option>
+										<option value="1011">三要素验证</option>
+										<option value="1101">三要素验证</option>
+										<option value="1110">三要素验证</option>
+										<option value="1100">二要素验证</option>
+										<option value="1010">二要素验证</option>
+										<option value="1001">二要素验证</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -80,8 +90,10 @@
 								</div>
 								<label class="col-sm-2 control-label">证件类型 </label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control"
-										ng-model="entity.certType" disabled>
+									<select class="form-control" ng-model="entity.certType"
+										disabled>
+										<option value="01">身份证</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -99,24 +111,28 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">手机号</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control"
-										ng-model="entity.phone" disabled>
+									<input type="text" class="form-control" ng-model="entity.phone"
+										disabled>
 								</div>
 								<label class="col-sm-2 control-label">交易费用</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control"
-										ng-model="entity.fee" disabled>
+									<input type="text" class="form-control" ng-model="entity.fee"
+										disabled>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">是否已核销</label>
 								<div class="col-sm-4">
-									<input type="email" class="form-control"
-										ng-model="entity.isWriteOff" disabled>
+									<select class="form-control" ng-model="entity.isWriteOff"
+										disabled>
+										<option value="N">否</option>
+										<option value="Y">是</option>
+									</select>
 								</div>
 								<label class="col-sm-2 control-label">渠道应答码</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control" ng-model="entity.respCode" disabled>
+									<input type="text" class="form-control"
+										ng-model="entity.respCode" disabled>
 								</div>
 							</div>
 							<div class="form-group">
@@ -127,8 +143,14 @@
 								</div>
 								<label class="col-sm-2 control-label">状态</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control"
-										ng-model="entity.status" disabled>
+								<select class="form-control" ng-model="entity.status"
+										disabled>
+										<option value="0">未提交渠道</option>
+										<option value="1">交易终止</option>
+										<option value="2">已提交渠道</option>
+										<option value="3">认证失败</option>
+										<option value="4">认证成功</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -139,8 +161,11 @@
 								</div>
 								<label class="col-sm-2 control-label">反馈状态</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control"
-										ng-model="entity.notifyStatus" disabled>
+										<select class="form-control" ng-model="entity.notifyStatus"
+										disabled>
+										<option value="0">未反馈</option>
+										<option value="1">已反馈</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -156,8 +181,7 @@
 								</div>
 							</div>
 						</div>
-						<footer class="panel-footer text-right bg-light lter">
-						</footer>
+						<footer class="panel-footer text-right bg-light lter"> </footer>
 					</div>
 				</form>
 			</div>

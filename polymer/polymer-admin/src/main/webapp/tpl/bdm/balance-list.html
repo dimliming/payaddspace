@@ -56,7 +56,12 @@
 								<td>{{entity.merchantCode}}</td>
 								<td>{{entity.openTime}}</td>
 								<td>{{entity.balance}}</td>
-								<td>{{entity.status}}</td>
+								<td>
+									<div ng-switch="entity.status">
+										<div ng-switch-when="0">正常</div>
+										<div ng-switch-when="1">销户</div>
+									</div>
+								</td>
 							</tr>
 							<tr ng-if="totalRecord==0">
 								<td colspan="6" align="center">当前无查询记录</td>

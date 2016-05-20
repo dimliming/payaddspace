@@ -3,7 +3,6 @@ package com.payadd.polymer.auth.docking;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -14,7 +13,6 @@ import java.util.TreeMap;
 import com.payadd.framework.common.extension.ExtensionDescription;
 import com.payadd.framework.common.toolkit.IdGenerator;
 import com.payadd.framework.ddl.DatabaseFacade;
-import com.payadd.framework.ddl.query.SimpleQuery;
 import com.payadd.polymer.auth.constant.MessageFields;
 import com.payadd.polymer.auth.constant.MessageType;
 import com.payadd.polymer.auth.constant.SystemRespCode;
@@ -22,8 +20,6 @@ import com.payadd.polymer.auth.layer.AuthDocking;
 import com.payadd.polymer.auth.protocol.AuthResultHelper;
 import com.payadd.polymer.auth.utils.HttpClient;
 import com.payadd.polymer.auth.utils.SignUtil;
-import com.payadd.polymer.model.acc.Account;
-import com.payadd.polymer.model.acc.AccountDetail;
 import com.payadd.polymer.model.aut.AuthDockingConfig;
 import com.payadd.polymer.model.aut.AuthResult;
 import com.payadd.polymer.model.aut.ChannelMessage;
@@ -34,16 +30,7 @@ public class ShengDaAuthDocking implements AuthDocking {
 
 	public AuthResult auth(DatabaseFacade facade, Trade trade, AuthDockingConfig config) {
 		AuthResult result = new AuthResult();
-
-		// 验证账户余额
-		SimpleQuery sq = new SimpleQuery(facade, Account.class);
-		sq.eq("merchantCode", trade.getMerchantCode());
-		Account account = (Account) sq.uniqueResult();
-		if (account.getBalance().compareTo(trade.getFee()) == -1) {
-			result.setResultCode(SystemRespCode.BALANCE_NO_ENOUGH);
-			return result;
-		}
-
+		System.out.println(config.getSubMerchantCode());
 		// 1.组装认证报文
 		Map<String, String> contentData = new TreeMap<String, String>();
 		contentData.put("version", "5.0.0");
@@ -57,14 +44,27 @@ public class ShengDaAuthDocking implements AuthDocking {
 		contentData.put("orderId", String.valueOf(System.currentTimeMillis()));
 		contentData.put("txnTime",
 				new SimpleDateFormat("yyyyMMddhhmmss").format(new Date(trade.getTradeTime().getTime())));
-		contentData.put("accNo", trade.getAccountNo());
+		if(trade.getAccountNo()!=null&&(!trade.getAccountNo().equals(""))){
+			contentData.put("accNo", trade.getAccountNo());
+		}
+		if(trade.getCertNo()!=null&&(!trade.getCertNo().equals(""))){
+			contentData.put("certifId", trade.getCertNo());
+		}
+		if(trade.getCustomName()!=null&&(!trade.getCustomName().equals(""))){
+			contentData.put("customerNm", trade.getCustomName());
+		}
+		if(trade.getPhone()!=null&&(!trade.getPhone().equals(""))){
+			contentData.put("phoneNo", trade.getPhone());
+		}
+		
+		
 		// 01 卡
 		contentData.put("accType", "01");
 		// 01身份证
+		if(trade.getCertType()!=null){
+			
+		}
 		contentData.put("certifTp", trade.getCertType());
-		contentData.put("certifId", trade.getCertNo());
-		contentData.put("customerNm", trade.getCustomName());
-		contentData.put("phoneNo", trade.getPhone());
 		String sign = SignUtil.signData(contentData, config.getMd5Key());
 		// 2.签名
 		contentData.put("signature", sign);
@@ -81,6 +81,7 @@ public class ShengDaAuthDocking implements AuthDocking {
 		// 4.获取返回报文，解析，验签，验签不通过，组装错误信息返回
 		String respons = client.getResult();
 		String str = null;
+		
 		try {
 			str = URLDecoder.decode(respons, "utf-8");
 		} catch (UnsupportedEncodingException e) {
@@ -98,7 +99,7 @@ public class ShengDaAuthDocking implements AuthDocking {
 		}
 		// 8.根据返回的结果，更新channel_trade_no、channel_code、resp_code、resp_msg到trade
 		trade.setChannelTradeNo(responsMap.get("orderId"));
-		trade.setRespCode(respCodeTranslate(responsMap.get("respCode")));
+		trade.setRespCode(RespCodeUtils.respCodeTranslate(responsMap.get("respCode")));
 		trade.setRespMsg(responsMap.get("respMsg"));
 
 		// 5.记录ChannelMessage日志信息
@@ -111,26 +112,7 @@ public class ShengDaAuthDocking implements AuthDocking {
 		channelMessage.setRespMsg(respons);
 		channelMessage.setTradeNo(trade.getTradeNo());
 		facade.insert(channelMessage);
-		String respCode = responsMap.get("respCode");
-		if (respCode.equals("00") || respCode.equals("04") || respCode.equals("05")) {
-			// 扣费
-			// 查找账户
 
-			// 账户收支明细
-			AccountDetail accountDetail = new AccountDetail();
-			accountDetail.setId(IdGenerator.nextLongSequence(AccountDetail.class));
-			accountDetail.setAccountNo(account.getAccountNo());
-			accountDetail.setMerchantCode(account.getMerchantCode());
-			accountDetail.setTradeTime(new Timestamp(System.currentTimeMillis()));
-			accountDetail.setAccountTime(new Timestamp(System.currentTimeMillis()));
-			accountDetail.setTradeType(10);
-			accountDetail.setTradeNo(trade.getTradeNo());
-			accountDetail.setAmt(account.getBalance());
-			accountDetail.setBalance(account.getBalance().subtract(trade.getFee()));
-			facade.insert(accountDetail);
-			account.setBalance(accountDetail.getBalance());
-			facade.update(account);
-		}
 
 		// 7.将结果封装到Result，返回
 		result.setResultCode(trade.getRespCode());
@@ -188,7 +170,7 @@ public class ShengDaAuthDocking implements AuthDocking {
 		facade.insert(channelMessage);
 
 		// 7.将结果封装到Result，返回
-		result.setResultCode(respCodeTranslate(trade.getRespCode()));
+		result.setResultCode(RespCodeUtils.respCodeTranslate(trade.getRespCode()));
 		return result;
 	}
 
@@ -220,108 +202,6 @@ public class ShengDaAuthDocking implements AuthDocking {
 		return reqstr;
 	}
 
-	private String respCodeTranslate(String channelRespCode) {
-		String respCode = null;
-		switch (channelRespCode) {
-		case "00":
-			respCode = SystemRespCode.SUCCESS;
-			break;
-		case "E1":
-			respCode = SystemRespCode.MESSAGE_NULL;
-			break;
-		case "E2":
-			respCode = SystemRespCode.SYSTEM_EXCEPTION;
-			break;
-		case "E3":
-			respCode = SystemRespCode.SIGNATURE_ERR;
-			break;
-		case "F2":
-			respCode = SystemRespCode.MESSAGE_ERR;
-			break;
-		case "E4":
-			respCode = SystemRespCode.MERCHANT_ERR;
-			break;
-		case "E5":
-			respCode = SystemRespCode.BALANCE_NO_ENOUGH;
-			break;
-		case "E6":
-			respCode = SystemRespCode.CARD_BIN_ERR;
-			break;
-		case "E7":
-			respCode = SystemRespCode.MERCHANT_CONFIG_NULL;
-			break;
-		case "E8":
-			respCode = SystemRespCode.CHANNAL_ERR;
-			break;
-		case "E9":
-			respCode = SystemRespCode.MERCHANT_TRADE_NO_REPEAT;
-			break;
-		case "F1":
-			respCode = SystemRespCode.MERCHANT_TRADE_NULL;
-			break;
-		case "01":
-			respCode = SystemRespCode.CALL_BANK;
-			break;
-		case "04":
-			respCode = SystemRespCode.CONFISCATE_CARD;
-			break;
-		case "05":
-			respCode = SystemRespCode.MASTER_AUTH_FAIL;
-			break;
-		case "12":
-			respCode = SystemRespCode.TRADE_INVALID;
-			break;
-		case "14":
-			respCode = SystemRespCode.CARD_INVALID;
-			break;
-		case "21":
-			respCode = SystemRespCode.CARD_SLEEP;
-			break;
-		case "34":
-			respCode = SystemRespCode.CARD_CHEAT;
-			break;
-		case "40":
-			respCode = SystemRespCode.TRADE_TYPE_NONSUPP;
-			break;
-		case "41":
-			respCode = SystemRespCode.CARD_LOSS;
-			break;
-		case "51":
-			respCode = SystemRespCode.CAPITAL_NO_ENOUGH;
-			break;
-		case "54":
-			respCode = SystemRespCode.CARD_PAST_DUE;
-			break;
-		case "55":
-			respCode = SystemRespCode.PASSWORD_ERR;
-			break;
-		case "57":
-			respCode = SystemRespCode.CARD_TRADE_NO_ALLOW;
-			break;
-		case "61":
-			respCode = SystemRespCode.TRADE_MONEY_EXCEED;
-			break;
-		case "62":
-			respCode = SystemRespCode.CARD_LIMIT;
-			break;
-		case "75":
-			respCode = SystemRespCode.PASSWORD_ERR_EXCEED;
-			break;
-		case "91":
-			respCode = SystemRespCode.BANK_ERR;
-			break;
-		case "98":
-			respCode = SystemRespCode.BANK_OVERTIME;
-			break;
-		case "ER":
-			respCode = SystemRespCode.OPERATE_EXCEPTION;
-			break;
 
-		default:
-			respCode = SystemRespCode.FIELD_FORMAT_ERR;
-			break;
-		}
-		return respCode;
-	}
 
 }

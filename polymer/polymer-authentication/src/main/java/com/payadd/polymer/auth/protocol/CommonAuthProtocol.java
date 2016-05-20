@@ -64,9 +64,11 @@ public class CommonAuthProtocol implements AuthProtocol {
 		}
 		// 2.验证签名，验证不通过就组装Result，返回
 		// 得到商户signKey
+		
 		SimpleQuery sq = new SimpleQuery(facade, MerchantSecurity.class);
 		sq.eq("merchantCode", map.get(MessageFields.MERCHANT_CODE));
 		MerchantSecurity mercSec = (MerchantSecurity) sq.uniqueResult();
+		
 		if (mercSec == null) {
 			result.setResultCode(SystemRespCode.OPERATE_EXCEPTION);
 			result.setResultDesc(AuthResultHelper.getDesc(result.getResultCode()));
@@ -314,7 +316,6 @@ public class CommonAuthProtocol implements AuthProtocol {
 				if (!ValidatorUtil.isMobile(value)) {
 					result.setResultCode(SystemRespCode.FIELD_FORMAT_ERR);
 				}
-				break;
 
 			default:
 				result.setResultCode(SystemRespCode.MESSAGE_ERR);

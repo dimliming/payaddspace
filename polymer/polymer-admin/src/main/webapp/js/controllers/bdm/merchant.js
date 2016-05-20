@@ -46,10 +46,10 @@ app.controller('MerchantCtrl', ['$scope','$rootScope', '$http','$state', functio
 	    		  var start = 0;
 				  var end = 0;
 				  if ($scope.currentPage<=3)start = 1;
-				  else start = $scope.currentPage-3;
+				  else start = parseInt($scope.currentPage)-3;
 					
 				  if (($scope.totalPage-$scope.currentPage)<=3) end = $scope.totalPage
-				  else end = $scope.currentPage +3;
+				  else end = parseInt($scope.currentPage) +3;
 					
 				  $scope.switchPages=[];
 				  for (var i=start;i<=end ;i++){

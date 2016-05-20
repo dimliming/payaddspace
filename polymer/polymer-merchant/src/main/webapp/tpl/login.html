@@ -1,0 +1,26 @@
+<div class="container w-xxl w-auto-xs" ng-controller="LoginFormController" ng-init="app.settings.container = false;">
+  <div class="m-b-lg">
+    <div class="wrapper text-center">
+      <strong>商户后台</strong>
+    </div>
+    <form name="form" class="form-validation">
+      
+      <div class="list-group list-group-sm">
+        <div class="list-group-item">
+          <input  class="form-control no-border" ng-model="user.loginName" required>
+        </div>
+        <div class="list-group-item">
+           <input type="password" class="form-control no-border" ng-model="user.password" required>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-lg btn-primary btn-block" ng-click="login()" >Log in</button>
+      
+      <div class="text-danger wrapper text-center" ng-show="authError">
+          {{authError}}
+      </div>
+    </form>
+  </div>
+  <div class="text-center" ng-include="'tpl/blocks/page_footer.html'">
+    {% include 'blocks/page_footer.html' %}
+  </div>
+</div>

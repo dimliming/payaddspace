@@ -32,8 +32,11 @@
 								</div>
 								<label class="col-sm-2 control-label">报文类型</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control"
-										ng-model="entity.msgType" disabled>
+									<select class="form-control" ng-model="entity.msgType" disabled>
+										<option value="1">认证</option>
+										<option value="2">查询</option>
+										<option value="3">反馈</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">

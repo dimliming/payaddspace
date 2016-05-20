@@ -17,7 +17,7 @@
 		<!--MySQL数据库的用户名 -->
 		<property name="user" value="root" />
 		<!--MySQL数据库 密码 -->
-		<property name="password" value="" />
+		<property name="password" value="Lijia820723" />
 		<!--连接池中保留的最小连接数。 -->
 		<property name="minPoolSize" value="5" />
 		<!--连接池中保留的最大连接数。Default: 15 -->

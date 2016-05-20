@@ -1,0 +1,134 @@
+
+<div class="wrapper-md">
+	<div>
+		<div class="row">
+			<div class="col-sm-12">
+				<form name="editform" class="form-horizontal form-validation">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong ng-if="entity.merchantCode!=undefined">商户信息</strong>
+						</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">商户编码</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.merchantCode" disabled>
+								</div>
+								<label class="col-sm-2 control-label">商户名称</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.fullName" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">商户状态</label>
+								<div class="col-sm-4">
+									<select class="form-control" ng-model="entity.status" disabled>
+										<option value="1">正常</option>
+										<option value="2">禁止</option>
+										<option value="3">销户</option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">商户名单标志</label>
+								<div class="col-sm-4">
+									<select class="form-control" ng-model="entity.listFlag"
+										disabled>
+										<option value="1">正常</option>
+										<option value="2">白名单</option>
+										<option value="3">黑名单</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">网址名称</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.siteName" disabled>
+								</div>
+								<label class="col-sm-2 control-label">网址地址</label>
+								<div class="col-sm-4">
+									<input type="url" class="form-control"
+										ng-model="entity.siteAddress" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">营业执照</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.businessLicense" disabled>
+								</div>
+								<label class="col-sm-2 control-label">组织机构代码</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.orgCode" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">法定代表人姓名</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.representName" disabled>
+								</div>
+								<label class="col-sm-2 control-label">法定代表人证件号码</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.representIdCode" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">单位联系地址</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.companyAddress" disabled>
+								</div>
+								<label class="col-sm-2 control-label">单位联系电话</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.companyPhone" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">联系人姓名</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.contactName" disabled>
+								</div>
+								<label class="col-sm-2 control-label">联系人职务</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.contactPosition" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">联系人邮箱</label>
+								<div class="col-sm-4">
+									<input type="email" class="form-control"
+										ng-model="entity.contractEmail" disabled>
+								</div>
+								<label class="col-sm-2 control-label">联系人手机</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" ng-model="entity.phone"
+										disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								
+								<label class="col-sm-2 control-label">建立时间</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.createTime" disabled>
+								</div>
+								<label class="col-sm-2 control-label">最后更新时间</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.lastUpdateTime" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
