@@ -45,4 +45,5 @@
 	<class name="com.payadd.polymer.model.sys.User" table="sys_user"
 		map-id="UserResultMap">
 	</class>
+	<class map-id="CommonFeeResultMap" name="com.payadd.polymer.model.aut.CommonFee" table="aut_common_fee"></class>
 </ibatis-mappings>

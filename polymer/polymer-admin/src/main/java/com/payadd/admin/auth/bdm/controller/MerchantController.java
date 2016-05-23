@@ -23,6 +23,7 @@ import com.payadd.framework.ddl.query.SimpleQuery;
 import com.payadd.merchant.contant.MerchantContant;
 import com.payadd.polymer.base.BaseController;
 import com.payadd.polymer.model.acc.Account;
+import com.payadd.polymer.model.aut.CommonFee;
 import com.payadd.polymer.model.bdm.Merchant;
 import com.payadd.polymer.model.bdm.MerchantUser;
 import com.payadd.polymer.model.sys.User;
@@ -120,6 +121,12 @@ public class MerchantController extends BaseController {
 			account.setTimestamp(new Timestamp(System.currentTimeMillis()).getTime());
 			accountService.insert(account);
 			merchantService.insert(entity);
+			
+			//为新增商户设置费率 默认2.00一笔
+			CommonFee commonFee = new CommonFee();
+			commonFee.setId(IdGenerator.nextLongSequence(CommonFee.class));
+			commonFee.setMerchantCode(entity.getMerchantCode());
+			facade.insert(commonFee);
 		} else {
 			entity.setLastUpdateTime(new Timestamp(System.currentTimeMillis()));
 			entity.setUpdateUserId(user.getLoginName());

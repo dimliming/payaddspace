@@ -726,7 +726,30 @@ angular.module('app')
                       }]
                   }
               })
-              
+               .state('papp.account.commonfee', {
+                  url: '/recharge',
+                  template: "<div ui-view class='fade-in-up' ng-controller='CommonFeeCtrl'></div>",            
+              })
+                 .state('papp.account.commonfee.edit', {
+                  url: '/edit',
+                  templateUrl: 'tpl/bdm/common-fee-edit.html',
+                  resolve: {
+                      deps: ['uiLoad',
+                        function( uiLoad){ 
+                          return uiLoad.load('js/controllers/bdm/common-fee.js');
+                      }]
+                  }
+              })
+                .state('papp.account.commonfee.enquiry', {
+                  url: '/enquiry',
+                  templateUrl: 'tpl/bdm/common-fee-list.html',
+                  resolve: {
+                      deps: ['uiLoad',
+                        function( uiLoad){
+                          return uiLoad.load('js/controllers/bdm/common-fee.js');
+                      }]
+                  }
+              })
               .state('papp.account.recharge.enquiry', {
                   url: '/enquiry',
                   templateUrl: 'tpl/bdm/recharge-list.html',

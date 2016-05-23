@@ -20,6 +20,7 @@ import com.payadd.polymer.auth.protocol.AuthResultHelper;
 import com.payadd.polymer.model.acc.Account;
 import com.payadd.polymer.model.acc.AccountDetail;
 import com.payadd.polymer.model.aut.AuthResult;
+import com.payadd.polymer.model.aut.CommonFee;
 import com.payadd.polymer.model.aut.Trade;
 import com.payadd.polymer.model.bdm.Merchant;
 
@@ -51,7 +52,12 @@ public class CommonAuthProduct implements AuthProduct {
 		trade.setNotifyStatus(NotifyStatus.UNFEEDBACK);
 		trade.setRespCode(null);
 		trade.setRespMsg(null);
-		trade.setFee(BigDecimal.valueOf(2));
+		
+		// 设置订单的收费标准
+		SimpleQuery commonfeeQuery = new SimpleQuery(facade, CommonFee.class);
+		commonfeeQuery.eq("merchantCode", trade.getMerchantCode());
+		CommonFee commonFee = (CommonFee) commonfeeQuery.uniqueResult();
+		trade.setFee(commonFee.getFee());
 		// 5.判断商户状态，如果商户状态不正常，那么将status=1-交易终止，resp_code=120001，resp_msg=商户状态异常或商户不存在，保存trade到数据库中，返回
 		SimpleQuery mercSq = new SimpleQuery(facade, Merchant.class);
 		mercSq.eq("merchantCode", trade.getMerchantCode());
@@ -66,13 +72,13 @@ public class CommonAuthProduct implements AuthProduct {
 		}
 		// 6.如果校验通过，保存trade到数据库中
 		facade.insert(trade);
-		
+
 		SimpleQuery accQuery = new SimpleQuery(facade, Account.class);
 		accQuery.eq("merchantCode", trade.getMerchantCode());
 		System.out.println(trade.getMerchantCode());
 		Account account = (Account) accQuery.uniqueResult();
 		if (trade.getIsTest().equals("N")) {
-			
+
 			// 验证账户余额
 			if (account.getBalance().compareTo(trade.getFee()) == -1) {
 				System.out.println(account.getBalance());
@@ -80,10 +86,10 @@ public class CommonAuthProduct implements AuthProduct {
 				return result;
 			}
 		}
-
+		System.out.println("auth");
 		// 7.调用agency进行认证请求发送
 		AuthResult agencyResult = agency.auth(facade, trade);
-
+		System.out.println("auth");
 		String respCode = agencyResult.getResultCode();
 		if (trade.getIsTest().equals("N")) {
 

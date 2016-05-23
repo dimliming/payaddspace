@@ -1,0 +1,46 @@
+<div class="wrapper bg-light lter b-b">
+	<a href ng-click="goBack()" class="btn btn-sm btn-default w-xxs m-r-sm"
+		tooltip="返回列表"><i class="fa fa-long-arrow-left"></i></a>
+</div>
+<div class="wrapper-md">
+	<div>
+		<div class="row">
+			<div class="col-sm-12">
+				<form name="editform" class="form-horizontal form-validation">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong ng-if="entity.merchantCode==undefined">商户收费标准编辑</strong>
+						</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">id</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.id" disabled>
+								</div>
+								<label class="col-sm-2 control-label">商户编码</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										ng-model="entity.merchantCode" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">收费标准(每笔)</label>
+								<div class="col-sm-4">
+									<input type="range" min="0.00" max="5.00" step="0.01" class="form-control"
+										ng-model="entity.fee" required>
+								</div>
+								<div class="col-sm-4">
+									{{entity.fee}}
+								</div>
+							</div>
+						</div>
+						<footer class="panel-footer text-right bg-light lter">
+							<button type="submit" class="btn btn-success" ng-click="save()">保存</button>
+						</footer>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
