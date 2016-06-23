@@ -862,6 +862,30 @@ angular.module('app')
                       }]
                   }
               })
+              .state('papp.product',{
+            	  url:'/product',
+            	  template:'<div ui-view class="fade-in-up" ng-controller="ProductCtrl"></div>',
+              })
+              .state('papp.product.enquiry',{
+            	  url:'/enquiry',
+            	  templateUrl:'tpl/com/product-list.html',
+            	  resolve:{
+            		  deps: ['uiLoad',
+                             function( uiLoad){
+                               return uiLoad.load('js/controllers/com/product.js');
+                           }]
+            	  }
+              })
+              .state('papp.product.edit',{
+            	  url:'/edit',
+            	  templateUrl:'tpl/com/product-edit.html',
+            	  resolve:{
+            		  deps: ['uiLoad',
+                             function( uiLoad){
+                               return uiLoad.load('js/controllers/com/product.js');
+                           }]
+            	  }
+              })
               .state('papp.docs', {
                   url: '/docs',
                   templateUrl: 'tpl/docs.html'

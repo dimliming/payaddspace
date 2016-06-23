@@ -88,6 +88,28 @@
       </li>
     </ul>
   </li>
+   <li ng-class="{active:$state.includes('papp.product')}">
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="glyphicon glyphicon-list"></i>
+      <span>产品</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li ui-sref-active="active">
+        <a ui-sref="papp.product.enquiry">
+          <span>产品管理</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="papp.merchantmsg.enquiry">
+          <span>商户产品查询</span>
+        </a>
+      </li>
+    </ul>
+  </li>
   <li>
     <a ui-sref="papp.docs">
       <i class="icon-question icon"></i>
