@@ -93,7 +93,7 @@ public class CommonAuthProtocol implements AuthProtocol {
 			return result;
 		}
 
-		//
+		//组装
 
 		// 4.组装Trade，调用product.auth
 		Trade trade = new Trade();

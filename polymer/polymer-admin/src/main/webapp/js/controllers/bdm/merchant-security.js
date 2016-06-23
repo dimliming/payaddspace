@@ -96,7 +96,7 @@ app.controller('MerchantSecCtrl', ['$scope','$rootScope', '$http','$state', func
 		    	  if (response.data.status=='000000'){//保存成功
 		    		  $scope.entity = response.data.entity;
 		    		  $scope.isNeedRefreshList = true;
-		    		  alert("保存成功");
+		    		  alert("修改成功");
 		    	  }else{//登录失败
 		    		  $rootScope.authError = response.data.message;		 
 		    		  $state.go("login");

@@ -28,7 +28,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">签名算法</label>
 								<div class="col-sm-4">
-									<select class="form-control" ng-model="entity.signAlg" required>
+									<select class="form-control" ng-model="entity.signAlg" disabled>
 										<option value="M">MD5</option>
 										<option value="S">S-SHA1</option>
 										<option value="R">RSA</option>
@@ -36,13 +36,13 @@
 								</div>
 								<label class="col-sm-2 control-label">签名key</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control" ng-model="entity.signKey"/>
+									<input type="text" class="form-control" ng-model="entity.signKey"disabled/>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">加密算法</label>
 								<div class="col-sm-4">
-									<select class="form-control" ng-model="entity.cryptoAlg">
+									<select class="form-control" ng-model="entity.cryptoAlg" disabled>
 										<option value="AES">AES</option>
 										<option value="DES">DES</option>
 										<option value="3DES">3DES</option>
@@ -51,24 +51,24 @@
 								<label class="col-sm-2 control-label">加密key</label>
 								<div class="col-sm-4">
 									<input type="url" class="form-control"
-										ng-model="entity.cryptoKey" >
+										ng-model="entity.cryptoKey" disabled>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">RSA公钥</label>
 								<div class="col-sm-4">
 									<input type="text" class="form-control"
-										ng-model="entity.publicKey">
+										ng-model="entity.publicKey" disabled>
 								</div>
 								<label class="col-sm-2 control-label">RSA私钥</label>
 								<div class="col-sm-4">
 									<input type="text" class="form-control"
-										ng-model="entity.privateKey">
+										ng-model="entity.privateKey" disabled>
 								</div>
 							</div>
 						</div>
 						<footer class="panel-footer text-right bg-light lter">
-							<button type="submit" class="btn btn-success" ng-click="save()">保存</button>
+							<button type="submit" class="btn btn-success" ng-click="save()">更换签名</button>
 						</footer>
 					</div>
 				</form>

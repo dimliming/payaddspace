@@ -1,6 +1,7 @@
 package com.payadd.admin.auth.bdm.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.payadd.admin.auth.bdm.service.MerchantSecurityService;
+import com.payadd.admin.utils.Md5Utils;
 import com.payadd.framework.common.toolkit.IdGenerator;
 import com.payadd.framework.common.toolkit.JsonUtil;
 import com.payadd.framework.ddl.query.SimpleQuery;
@@ -55,8 +57,9 @@ public class MerchantSecurityController extends BaseController {
 
 	@RequestMapping(value = "save")
 	public void save(HttpServletRequest request, HttpServletResponse response, Model model, MerchantSecurity entity) {
+		entity.setSignKey(Md5Utils.string2MD5(new Timestamp(System.currentTimeMillis()).toString()));
 		merchantSecurityService.update(entity);
-
+		
 		StringBuffer respMsg = new StringBuffer();
 		respMsg.append("{");
 		respMsg.append("\"status\":\"000000\",\"message\":\"ok\"");

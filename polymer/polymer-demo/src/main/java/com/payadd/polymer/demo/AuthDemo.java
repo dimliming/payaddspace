@@ -18,7 +18,7 @@ import com.google.common.base.Strings;
  */
 public class AuthDemo {
 	// 每个商户分配md5盐值
-	static String signKey = "111111";
+	static String signKey = "32c6c60da301fcd18f98a9fbba110fde";
 	// 分配商户号
 	static String merid = "16052356245018708";
 
@@ -52,7 +52,7 @@ public class AuthDemo {
 		contentData.put("is_test", "Y");
 		String sign = signData(contentData);
 		contentData.put("signature", sign);
-		HttpClient client = new HttpClient("http://120.76.100.24/gateway/auth/docking", 6000, 60000);
+		HttpClient client = new HttpClient("http://localhost:8080/polymer-gateway/auth/docking", 6000, 60000);
 		client.send(contentData, "utf-8");
 		String respons = client.getResult();
 		String str = URLDecoder.decode(respons, "utf-8");

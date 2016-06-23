@@ -46,7 +46,7 @@ public class HttpClient {
             } else {
                 this.requestServer(e, this.getRequestParamString(data, encoding), encoding);
                 this.result = this.response(e, encoding);
-
+                
                 System.out.println("返回报文:[" + this.result + "]");
                 return e.getResponseCode();
             }
@@ -115,7 +115,6 @@ public class HttpClient {
         byte[] buf = new byte[1024];
         boolean length = false;
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-
         int length1;
         while((length1 = in.read(buf, 0, buf.length)) > 0) {
             bout.write(buf, 0, length1);

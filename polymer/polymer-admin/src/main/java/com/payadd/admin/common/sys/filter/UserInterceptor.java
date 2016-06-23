@@ -11,6 +11,7 @@ import com.payadd.polymer.base.BaseController;
 
 public class UserInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
+		
 		if (request.getSession().getAttribute(BaseController.LOGIN_USER)!=null){
 			return true;
 		}else{

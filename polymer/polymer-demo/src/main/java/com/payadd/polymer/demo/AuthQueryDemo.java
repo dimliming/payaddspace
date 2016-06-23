@@ -17,7 +17,7 @@ public class AuthQueryDemo {
     //每个商户分配md5盐值
     static String signKey="111111";
     //分配商户号
-    static String merid="16042666657104525";
+    static String merid="16052356245018708";
 
     public static void main(String[] args) throws Exception {
 
@@ -28,10 +28,10 @@ public class AuthQueryDemo {
         //01 认证订单查询
         contentData.put("txn_type", "01");
         contentData.put("merchant_code", merid);
-        contentData.put("order_no", "DD160509142332");
+        contentData.put("order_no", "DD160606115951");
        String sign= signData(contentData);
         contentData.put("signature",sign);
-      HttpClient client = new HttpClient("http://localhost:8080/gateway/auth/docking",6000,60000);
+      HttpClient client = new HttpClient("http://120.76.100.24/gateway/auth/docking",6000,60000);
         client.send(contentData,"utf-8");
        String respons=    client.getResult();
         System.out.println(URLDecoder.decode(respons,"utf-8"));

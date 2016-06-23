@@ -12,12 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.payadd.framework.common.toolkit.JsonUtil;
 import com.payadd.framework.ddl.query.PaginationQuery;
-import com.payadd.framework.ddl.query.SimpleQuery;
 import com.payadd.polymer.base.BaseController;
 import com.payadd.polymer.model.acc.AccountDetail;
-import com.payadd.polymer.model.aut.ChannelMessage;
-import com.payadd.polymer.model.aut.MerchantMessage;
-import com.payadd.polymer.model.aut.Trade;
 @Controller("accountDetailController")
 @RequestMapping("/accountDetail")
 public class AccountDetailController extends BaseController{

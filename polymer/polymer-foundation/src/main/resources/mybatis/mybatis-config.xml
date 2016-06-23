@@ -15,5 +15,7 @@
 		<mapper resource="mybatis/RechargeMapper.xml" />
 		<mapper resource="mybatis/UserMapper.xml" />
 		<mapper resource="mybatis/CommonFeeMapper.xml" />
+		<mapper resource="mybatis/ProductMapper.xml" />
+		<mapper resource="mybatis/ProductRelationMapper.xml" />
 	</mappers>
 </configuration>
