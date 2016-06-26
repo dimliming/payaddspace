@@ -12,6 +12,7 @@ public class ProductRelation {
 	private String id;
 	private String merchantCode;
 	private String productCode;
+	private String productName;
 	private BigDecimal fee;
 	private Timestamp createTime;
 	private String status;
@@ -32,6 +33,12 @@ public class ProductRelation {
 	}
 	public void setProductCode(String productCode) {
 		this.productCode = productCode;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 	public BigDecimal getFee() {
 		return fee;

@@ -46,7 +46,6 @@ public class MerchantUserController extends BaseController {
 
 		facade.update(entity);
 		request.getSession().setAttribute(LOGIN_USER, entity);
-		
 		StringBuffer respMsg = new StringBuffer();
 		respMsg.append("{");
 		respMsg.append("\"status\":\"000000\",\"message\":\"ok\"");

@@ -1,0 +1,88 @@
+<div class="wrapper-md">
+  <div>
+  	<form name="listform" class="form-validation">
+    <div class="row">
+      <div class="col-sm-12">
+        
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <span class="h4">查询条件</span>
+            </div>
+            <div class="panel-body">
+                <div class="form-group pull-in clearfix">
+                  <div class="col-sm-6">
+                    <label>商户号</label>
+                    <input type="text" class="form-control"  ng-model="condition.merchantCode">
+                  </div>
+                  <div class="col-sm-6">
+                    <label>产品号</label>
+                    <input type="text" class="form-control"  ng-model="condition.productCode">
+                  </div>
+                </div>
+                
+            </div>
+            <footer class="panel-footer text-right bg-light lter">
+              <button type="submit" class="btn btn-success" ng-click="query()">查询</button>
+            </footer>
+          </div>
+        
+      </div>
+    </div>
+    
+	  <div class="panel panel-default">
+	    <div class="panel-heading">
+	      	产品关系列表
+	    </div>
+	    <div class="table-responsive">
+	      <table class="table table-striped b-t b-light">
+	        <thead>
+	          <tr>
+	             <th>id</th>
+	            <th>商户号</th>
+	             <th>产品号</th>
+	            <th>费率</th>
+	            <th>申请时间</th>
+	            <th>状态</th>
+	            <th>操作</th>
+	          </tr>
+	        </thead>
+	        <tbody>
+	          <tr ng-repeat="entity in list">
+	            <td>{{entity.id}}</td>
+	            <td>{{entity.merchantCode}}</td>
+	            <td>{{entity.productCode}}</td>
+	            <td>{{entity.fee}}</td>
+	            <td>{{entity.createTime}}</td>
+	            <td>{{entity.status}}</td>
+	            <td>
+	              <a href ng-click="edit(entity.id)">编辑</a>
+	            </td>
+	          </tr>
+	          <tr ng-if="totalRecord==0">
+	          	<td colspan="6" align="center">当前无查询记录</td>
+	          </tr>
+	        </tbody>
+	      </table>
+	    </div>
+	    <footer class="panel-footer" ng-if="totalRecord>0">
+	      <div class="row">
+	        <div class="col-sm-4 hidden-xs">
+	          <small class="text-muted inline m-t-sm m-b-sm">总记录数：{{totalRecord}}/总页数：{{totalPage}}</small>
+	        </div>
+	        <div class="col-sm-8 text-right text-center-xs">                
+	          <ul class="pagination pagination-sm m-t-none m-b-none">
+	            <li><a ng-if="currentPage>1" href ng-click="query(currentPage-1)"><i class="fa fa-chevron-left"></i></a></li>
+	            <li ng-repeat="switchPage in switchPages">
+	            	<a ng-if="switchPage.num==currentPage" href style="background-color:blue;">{{switchPage.label}}</a>
+	            	<a ng-if="switchPage.num!=currentPage" href ng-click="query(switchPage.num)">{{switchPage.label}}</a>
+	            </li>
+	            <li><a ng-if="currentPage<totalPage" href ng-click="query(currentPage+1)"><i class="fa fa-chevron-right"></i></a></li>
+	          </ul>
+	        </div>
+	      </div>
+	    </footer>
+	  </div>
+    
+	</form>
+  </div>
+</div>

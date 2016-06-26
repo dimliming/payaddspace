@@ -4,10 +4,11 @@
 	<resultMap type="com.payadd.polymer.model.bdm.ProductRelation"
 		id="ProductRelationResultMap">
 		<id property="id" column="id" />
-		<result property="merchantCode" column="merchant_code" />
-		<result property="productCode" column="product_code" />
-		<result property="fee" column="fee" />
-		<result property="createTime" column="create_time" />
-		<result property="status" column="status" />
+		<result property="merchantCode" column="merchant_code"/>
+		<result property="productCode" column="product_code"/>
+		<result property="productName" column="product_name"/>
+		<result property="fee" column="fee"/>
+		<result property="createTime" column="create_time"/>
+		<result property="status" column="status"/>
 	</resultMap>
 </mapper>  

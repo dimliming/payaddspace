@@ -29,6 +29,15 @@ public class AuthController {
 			e.printStackTrace();
 		}
 	}
+	@RequestMapping(value="four")
+	public void four(HttpServletRequest request, HttpServletResponse response, Model model){
+		try {
+			response.setHeader("Content-Type", "text/html");
+			response.getWriter().write("test");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	@RequestMapping(value="docking")
 	public void docking(HttpServletRequest request, HttpServletResponse response, Model model){

@@ -1,6 +1,7 @@
-package com.payadd.admin.auth.bdm.controller;
+package com.payadd.merchant.controller;
 
-import java.io.IOException;import java.sql.Timestamp;
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,29 +12,30 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.payadd.admin.auth.bdm.service.ProductService;
 import com.payadd.framework.common.toolkit.JsonUtil;
 import com.payadd.framework.ddl.query.PaginationQuery;
 import com.payadd.framework.ddl.query.SimpleQuery;
+import com.payadd.merchant.services.ProductRelationService;
 import com.payadd.polymer.base.BaseController;
-import com.payadd.polymer.model.aut.CommonFee;
-import com.payadd.polymer.model.bdm.Merchant;
-import com.payadd.polymer.model.com.Product;
+import com.payadd.polymer.model.bdm.MerchantUser;
+import com.payadd.polymer.model.bdm.ProductRelation;
 
-@Controller("productController")
-@RequestMapping("/product")
-public class ProductController extends BaseController{
-	@Resource(name = "productService")
-	private ProductService productService;
+@Controller("productRelationController")
+@RequestMapping("/productRelation")
+public class ProductRelationController extends BaseController{
+	@Resource(name = "productRelationService")
+	private ProductRelationService productRelationService;
 	
 	@RequestMapping(value = "list")
-	public void list(HttpServletRequest request, HttpServletResponse response, Model model, Product product) {
+	public void list(HttpServletRequest request, HttpServletResponse response, Model model, ProductRelation productRelation) {
+		MerchantUser user = getCurrentUser(request);
 		String currentPage = request.getParameter("currentPage");
+		productRelation.setMerchantCode(user.getMerchantCode());
 		int pageNum = 1;
 		if (currentPage != null) {
 			pageNum = Integer.valueOf(currentPage).intValue();
 		}
-		PaginationQuery pq = new PaginationQuery(facade, product);
+		PaginationQuery pq = new PaginationQuery(facade, productRelation);
 		pq.enableLike();
 		pq.setCurrentPage(pageNum);
 		List list = pq.list();
@@ -57,10 +59,10 @@ public class ProductController extends BaseController{
 	}
 	@RequestMapping(value = "load")
 	public void load(HttpServletRequest request, HttpServletResponse response, Model model) {
-		String productCode = request.getParameter("productCode");
-		SimpleQuery sq = new SimpleQuery(facade, Product.class);
-		sq.eq("productCode", productCode);
-		Product entity = (Product) sq.uniqueResult();
+		String id = request.getParameter("id");
+		SimpleQuery sq = new SimpleQuery(facade, ProductRelation.class);
+		sq.eq("id", id);
+		ProductRelation entity = (ProductRelation) sq.uniqueResult();
 		StringBuffer respMsg = new StringBuffer();
 		respMsg.append("{");
 		respMsg.append("\"status\":\"000000\",\"message\":\"ok\"");
@@ -76,12 +78,12 @@ public class ProductController extends BaseController{
 		}
 	}
 	@RequestMapping(value = "save")
-	public void save(HttpServletRequest request, HttpServletResponse response, Model model, Product entity) {
+	public void save(HttpServletRequest request, HttpServletResponse response, Model model, ProductRelation entity) {
 		if(entity.getProductCode() == null){
 			entity.setCreateTime(new Timestamp(System.currentTimeMillis()));
-			productService.insert(entity);
+			productRelationService.insert(entity);
 		}else{
-			productService.update(entity);
+			productRelationService.update(entity);
 		}
 		
 		StringBuffer respMsg = new StringBuffer();
@@ -97,5 +99,9 @@ public class ProductController extends BaseController{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	private MerchantUser getCurrentUser(HttpServletRequest request) {
+		MerchantUser user = (MerchantUser) request.getSession().getAttribute(LOGIN_USER);
+		return user;
 	}
 }

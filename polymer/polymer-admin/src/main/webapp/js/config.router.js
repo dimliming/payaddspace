@@ -886,6 +886,30 @@ angular.module('app')
                            }]
             	  }
               })
+               .state('papp.productRelation',{
+            	  url:'/product',
+            	  template:'<div ui-view class="fade-in-up" ng-controller="ProductRelationCtrl"></div>',
+              })
+              .state('papp.productRelation.enquiry',{
+            	  url:'/enquiry',
+            	  templateUrl:'tpl/bdm/product-relation-list.html',
+            	  resolve:{
+            		  deps: ['uiLoad',
+                             function( uiLoad){
+                               return uiLoad.load('js/controllers/bdm/productRelation.js');
+                           }]
+            	  }
+              })
+              .state('papp.productRelation.edit',{
+            	  url:'/edit',
+            	  templateUrl:'tpl/bdm/product-relation-edit.html',
+            	  resolve:{
+            		  deps: ['uiLoad',
+                             function( uiLoad){
+                               return uiLoad.load('js/controllers/bdm/productRelation.js');
+                           }]
+            	  }
+              })
               .state('papp.docs', {
                   url: '/docs',
                   templateUrl: 'tpl/docs.html'
